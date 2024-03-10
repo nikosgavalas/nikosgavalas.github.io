@@ -6,7 +6,18 @@
     <description>Recent content on Nikos Gavalas</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 12 Mar 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://nikosg.com/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 13 Jul 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://nikosg.com/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Detecting the liver in abdominal CT scans using Deep Learning</title>
+      <link>https://nikosg.com/detecting-the-liver-in-abdominal-ct-scans-using-deep-learning/</link>
+      <pubDate>Wed, 13 Jul 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://nikosg.com/detecting-the-liver-in-abdominal-ct-scans-using-deep-learning/</guid>
+      <description>This blogpost is part of the group project of the course &amp;ldquo;Computer Vision by Deep Learning&amp;rdquo;, offered at TU Delft. Credits to my collaborator Markos Gkozntaris. The codebase of our project can be found here.
+Introduction In Computer Vision, there exists no network architecture that is equally suitable and effective for all tasks. Different architectures can be used in order to tackle tasks in specific applications and datasets.
+In this blogpost, we discuss the effectiveness of UNet3+ on datasets of CT scans, on the task of performing liver segmentation.</description>
+    </item>
+    
     <item>
       <title>Volume Rendering for 3D Data Visualization</title>
       <link>https://nikosg.com/volume-rendering-for-3d-data-visualization/</link>
