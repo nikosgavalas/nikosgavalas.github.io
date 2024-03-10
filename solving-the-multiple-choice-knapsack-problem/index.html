@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Language" content="en">
+    <meta name="color-scheme" content="light dark">
+
+    
+      <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests; block-all-mixed-content; default-src 'self'; child-src 'self'; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net/ https://cdnjs.cloudflare.com; form-action 'self'; frame-src 'self'; img-src 'self'; object-src 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com/ https://cdn.jsdelivr.net/; script-src 'self' 'unsafe-inline' https://www.google-analytics.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; prefetch-src 'self'; connect-src 'self' https://www.google-analytics.com;">
+
+    
+
+    
+    <meta name="description" content="The 0-1 Knapsack problem is a popular combinatorial optimization problem:
+Given a set of n items, each having a value \( p_i \) and a weight of \( w_i \), find a subset of these items such that the total value is maximized, while keeping the total weight of the items under a given constant weight capacity W.
+Formally, we need to maximize \( \sum_{i=1}^{n}{p_{i}f_{i}} \), while subjecting to \( \sum_{i=1}^{n}{w_{i}f_{i}} \le W \), \( f_i \in \{0, 1\}, \forall i \in \{ 1, &hellip;, n\} \).">
+    <meta name="keywords" content="">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Solving the Multiple Choice Knapsack Problem"/>
+<meta name="twitter:description" content="The 0-1 Knapsack problem is a popular combinatorial optimization problem:
+Given a set of n items, each having a value \( p_i \) and a weight of \( w_i \), find a subset of these items such that the total value is maximized, while keeping the total weight of the items under a given constant weight capacity W.
+Formally, we need to maximize \( \sum_{i=1}^{n}{p_{i}f_{i}} \), while subjecting to \( \sum_{i=1}^{n}{w_{i}f_{i}} \le W \), \( f_i \in \{0, 1\}, \forall i \in \{ 1, &hellip;, n\} \)."/>
+
+    <meta property="og:title" content="Solving the Multiple Choice Knapsack Problem" />
+<meta property="og:description" content="The 0-1 Knapsack problem is a popular combinatorial optimization problem:
+Given a set of n items, each having a value \( p_i \) and a weight of \( w_i \), find a subset of these items such that the total value is maximized, while keeping the total weight of the items under a given constant weight capacity W.
+Formally, we need to maximize \( \sum_{i=1}^{n}{p_{i}f_{i}} \), while subjecting to \( \sum_{i=1}^{n}{w_{i}f_{i}} \le W \), \( f_i \in \{0, 1\}, \forall i \in \{ 1, &hellip;, n\} \)." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://nikosg.com/solving-the-multiple-choice-knapsack-problem/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2019-02-06T00:00:00+00:00" />
+<meta property="article:modified_time" content="2019-02-06T00:00:00+00:00" />
+
+
+    <title>
+  Solving the Multiple Choice Knapsack Problem · Nikos Gavalas
+</title>
+
+    
+      <link rel="canonical" href="https://nikosg.com/solving-the-multiple-choice-knapsack-problem/">
+    
+
+    <link rel="preload" href="/fonts/forkawesome-webfont.woff2?v=1.2.0" as="font" type="font/woff2" crossorigin>
+
+    
+      
+      
+      <link rel="stylesheet" href="/css/coder.min.708686f8ab8176e91d44fcbe488a0fe0333b94f405cf18a52383d67ba22f0ccb.css" integrity="sha256-cIaG&#43;KuBdukdRPy&#43;SIoP4DM7lPQFzxilI4PWe6IvDMs=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+      
+        
+        
+        <link rel="stylesheet" href="/css/coder-dark.min.aa883b9ce35a8ff4a2a5008619005175e842bb18a8a9f9cc2bbcf44dab2d91fa.css" integrity="sha256-qog7nONaj/SipQCGGQBRdehCuxioqfnMK7z0Tastkfo=" crossorigin="anonymous" media="screen" />
+      
+    
+
+    
+      <link rel="stylesheet" href="/css/custom.css" />
+    
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/styles/default.min.css" />
+    
+
+    
+
+    <link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16">
+
+    <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+    
+
+    <meta name="generator" content="Hugo 0.111.3">
+  </head>
+
+  
+  
+    
+  
+  <body class="preload-transitions colorscheme-auto"
+        onload=""
+  >
+    
+<div class="float-container">
+    <a id="dark-mode-toggle" class="colorscheme-toggle">
+        <i class="fa fa-adjust fa-fw" aria-hidden="true"></i>
+    </a>
+</div>
+
+
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="/">
+      Nikos Gavalas
+    </a>
+    
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <i class="fa fa-bars fa-fw" aria-hidden="true"></i>
+      </label>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="/posts/">Posts</a>
+            </li>
+          
+        
+        
+      </ul>
+    
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">
+            <a class="title-link" href="https://nikosg.com/solving-the-multiple-choice-knapsack-problem/">
+              Solving the Multiple Choice Knapsack Problem
+            </a>
+          </h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fa fa-calendar" aria-hidden="true"></i>
+              <time datetime='2019-02-06T00:00:00Z'>
+                February 6, 2019
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fa fa-clock-o" aria-hidden="true"></i>
+              2-minute read
+            </span>
+          </div>
+          
+          <div class="categories">
+  <i class="fa fa-folder" aria-hidden="true"></i>
+    <a href="/categories/algorithms/">algorithms</a></div>
+
+          <div class="tags">
+  <i class="fa fa-tag" aria-hidden="true"></i>
+    <span class="tag">
+      <a href="/tags/algorithms/">algorithms</a>
+    </span>
+      <span class="separator">•</span>
+    <span class="tag">
+      <a href="/tags/programming/">programming</a>
+    </span></div>
+
+        </div>
+      </header>
+
+      <div>
+        
+        <p>The 0-1 Knapsack problem is a popular combinatorial optimization problem:</p>
+<blockquote>
+<p>Given a set of n items, each having a value \( p_i \) and a weight of \( w_i \), find a subset of these items such that the total value is maximized, while keeping the total weight of the items under a given constant weight capacity W.</p>
+</blockquote>
+<p>Formally, we need to maximize \( \sum_{i=1}^{n}{p_{i}f_{i}} \), while subjecting to \( \sum_{i=1}^{n}{w_{i}f_{i}} \le W \), \( f_i \in \{0, 1\}, \forall i \in \{ 1, &hellip;, n\} \).</p>
+<p>This problem has a nice Dynamic Programming solution, which runs in \( O(nW) \) time (<a href="https://en.wikipedia.org/wiki/Pseudo-polynomial_time">pseudopolynomial</a>). It is a computationally hard problem, as it is NP-Complete, but it has many important applications.</p>
+<p>It has <a href="https://en.wikipedia.org/wiki/List_of_knapsack_problems">many known variations</a>, one of which is the Multiple Choice Knapsack Problem. In this case, the items are subdivided into \( k \) classes, each having \( N_i \) items, and exactly one item must be taken from each class. Formally, we need to maximize \( \sum_{i=1}^{k}\sum_{j \in N_i}{p_{ij}x_{ij}} \), while subjecting to \( \sum_{i=1}^{k}\sum_{j \in N_i}{w_{ij}x_{ij}} \le W\), with \( \sum_{j \in N_i}{x_{ij}} = 1, \forall i \in \{1, &hellip;, k\}\) and \( x_{ij} \in \{0, 1\}, \forall i \in \{1, &hellip;, k\} \) and \( \forall j \in N_i \).</p>
+<p>To solve this problem, we will use a Dynamic Programming approach. The recursive equation that describes the relation between the overlapping subproblems is the following:</p>
+<p>\[ Value[i, j] = \max_{1 \le u \le N_i, w_{iu} \le j}\{ Value[i-1, j-w_{iu}] + p_{iu} \} \]</p>
+<p>Below is an implementation in C++:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="">int</span> max_value(std::vector&lt;std::vector&lt;<span style="">int</span>&gt;&gt; <span style="font-weight:bold">const</span> &amp;weights,
+</span></span><span style="display:flex;"><span>              std::vector&lt;std::vector&lt;<span style="">int</span>&gt;&gt; <span style="font-weight:bold">const</span> &amp;values,
+</span></span><span style="display:flex;"><span>              <span style="">int</span> max_weight) {
+</span></span><span style="display:flex;"><span>  <span style="font-weight:bold">if</span> (weights.empty()) {
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">return</span> 0;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  std::vector&lt;<span style="">int</span>&gt; last(max_weight + 1, -1);
+</span></span><span style="display:flex;"><span>  <span style="font-weight:bold">for</span> (<span style="">int</span> i = 0; i &lt; weights[0].size(); ++i) {
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">if</span> (weights[0][i] &lt; max_weight) {
+</span></span><span style="display:flex;"><span>      last[weights[0][i]] = std::max(last[weights[0][i]], values[0][i]);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  std::vector&lt;<span style="">int</span>&gt; curr(max_weight + 1);
+</span></span><span style="display:flex;"><span>  <span style="font-weight:bold">for</span> (<span style="">int</span> i = 1; i &lt; weights.size(); ++i) {
+</span></span><span style="display:flex;"><span>    std::fill(curr.begin(), curr.end(), -1);
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">for</span> (<span style="">int</span> j = 0; j &lt; weights[i].size(); ++j) {
+</span></span><span style="display:flex;"><span>      <span style="font-weight:bold">for</span> (<span style="">int</span> k = weights[i][j]; k &lt;= max_weight; ++k) {
+</span></span><span style="display:flex;"><span>        <span style="font-weight:bold">if</span> (last[k - weights[i][j]] &gt; 0) {
+</span></span><span style="display:flex;"><span>          curr[k] = std::max(curr[k], last[k - weights[i][j]] + values[i][j]);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    std::swap(curr, last);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="font-weight:bold">return</span> *std::max_element(last.begin(), last.end());
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="">int</span> main(<span style="">int</span> argc, <span style="">char</span> <span style="font-weight:bold">const</span> *argv[]) {
+</span></span><span style="display:flex;"><span>  std::vector&lt;<span style="">int</span>&gt; values_class_1;
+</span></span><span style="display:flex;"><span>  values_class_1.push_back(2);
+</span></span><span style="display:flex;"><span>  values_class_1.push_back(3);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  std::vector&lt;<span style="">int</span>&gt; weights_class_1;
+</span></span><span style="display:flex;"><span>  weights_class_1.push_back(3);
+</span></span><span style="display:flex;"><span>  weights_class_1.push_back(4);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  std::vector&lt;<span style="">int</span>&gt; values_class_2;
+</span></span><span style="display:flex;"><span>  values_class_2.push_back(1);
+</span></span><span style="display:flex;"><span>  values_class_2.push_back(2);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  std::vector&lt;<span style="">int</span>&gt; weights_class_2;
+</span></span><span style="display:flex;"><span>  weights_class_2.push_back(2);
+</span></span><span style="display:flex;"><span>  weights_class_2.push_back(3);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  std::vector&lt;std::vector&lt;<span style="">int</span>&gt;&gt; values;
+</span></span><span style="display:flex;"><span>  values.push_back(values_class_1);
+</span></span><span style="display:flex;"><span>  values.push_back(values_class_2);
+</span></span><span style="display:flex;"><span>  std::vector&lt;std::vector&lt;<span style="">int</span>&gt;&gt; weights;
+</span></span><span style="display:flex;"><span>  weights.push_back(weights_class_1);
+</span></span><span style="display:flex;"><span>  weights.push_back(weights_class_2);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="">int</span> max_weight = 7;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  std::cout &lt;&lt; max_value(weights, values, max_weight) &lt;&lt; std::endl;  <span style="font-style:italic">// 5
+</span></span></span><span style="display:flex;"><span><span style="font-style:italic"></span>
+</span></span><span style="display:flex;"><span>  <span style="font-weight:bold">return</span> 0;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>The time complexity of this solution is \(O(C\sum_{i=1}^{k}{N_i})\).</p>
+
+      </div>
+
+
+      <footer>
+        
+
+
+        
+        
+        
+      </footer>
+    </article>
+
+    
+  </section>
+
+      </div>
+
+      
+  <footer class="footer">
+    <section class="container">
+      
+      
+        ©
+        
+          2018 -
+        
+        2024
+        
+      
+      
+      
+    </section>
+  </footer>
+
+
+    </main>
+
+    
+      
+      <script src="/js/coder.min.cb0c595e02234420f3ad3886bf4a9bd2874d0e1e78e090138a9ef158b35aaf17.js" integrity="sha256-ywxZXgIjRCDzrTiGv0qb0odNDh544JATip7xWLNarxc="></script>
+    
+
+    
+      <script src="/js/custom.js"></script>
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    
+      <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/highlight.min.js"></script>
+    
+
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-122370931-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+  </body>
+
+</html>

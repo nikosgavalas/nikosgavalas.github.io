@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Language" content="en">
+    <meta name="color-scheme" content="light dark">
+
+    
+      <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests; block-all-mixed-content; default-src 'self'; child-src 'self'; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net/ https://cdnjs.cloudflare.com; form-action 'self'; frame-src 'self'; img-src 'self'; object-src 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com/ https://cdn.jsdelivr.net/; script-src 'self' 'unsafe-inline' https://www.google-analytics.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; prefetch-src 'self'; connect-src 'self' https://www.google-analytics.com;">
+
+    
+
+    
+    <meta name="description" content="The 2-SAT problem The Boolean Satisfiability problem, also known as the SAT problem, is the problem of determining if there exists a set of values for the variables of a boolean expression so that it evaluates to TRUE. It has been proven to be NP-Complete, and is one of the most important and famous problems in Computer Science because it is the problem most used to prove other problems to belong in the complexity class NP, via reductions.">
+    <meta name="keywords" content="">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Solving 2-SAT faster using Quantum Computing"/>
+<meta name="twitter:description" content="The 2-SAT problem The Boolean Satisfiability problem, also known as the SAT problem, is the problem of determining if there exists a set of values for the variables of a boolean expression so that it evaluates to TRUE. It has been proven to be NP-Complete, and is one of the most important and famous problems in Computer Science because it is the problem most used to prove other problems to belong in the complexity class NP, via reductions."/>
+
+    <meta property="og:title" content="Solving 2-SAT faster using Quantum Computing" />
+<meta property="og:description" content="The 2-SAT problem The Boolean Satisfiability problem, also known as the SAT problem, is the problem of determining if there exists a set of values for the variables of a boolean expression so that it evaluates to TRUE. It has been proven to be NP-Complete, and is one of the most important and famous problems in Computer Science because it is the problem most used to prove other problems to belong in the complexity class NP, via reductions." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://nikosg.com/solving-2-sat-faster-using-quantum-computing/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-11-05T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-11-05T00:00:00+00:00" />
+
+
+    <title>
+  Solving 2-SAT faster using Quantum Computing · Nikos Gavalas
+</title>
+
+    
+      <link rel="canonical" href="https://nikosg.com/solving-2-sat-faster-using-quantum-computing/">
+    
+
+    <link rel="preload" href="/fonts/forkawesome-webfont.woff2?v=1.2.0" as="font" type="font/woff2" crossorigin>
+
+    
+      
+      
+      <link rel="stylesheet" href="/css/coder.min.708686f8ab8176e91d44fcbe488a0fe0333b94f405cf18a52383d67ba22f0ccb.css" integrity="sha256-cIaG&#43;KuBdukdRPy&#43;SIoP4DM7lPQFzxilI4PWe6IvDMs=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+      
+        
+        
+        <link rel="stylesheet" href="/css/coder-dark.min.aa883b9ce35a8ff4a2a5008619005175e842bb18a8a9f9cc2bbcf44dab2d91fa.css" integrity="sha256-qog7nONaj/SipQCGGQBRdehCuxioqfnMK7z0Tastkfo=" crossorigin="anonymous" media="screen" />
+      
+    
+
+    
+      <link rel="stylesheet" href="/css/custom.css" />
+    
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/styles/default.min.css" />
+    
+
+    
+
+    <link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16">
+
+    <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+    
+
+    <meta name="generator" content="Hugo 0.111.3">
+  </head>
+
+  
+  
+    
+  
+  <body class="preload-transitions colorscheme-auto"
+        onload=""
+  >
+    
+<div class="float-container">
+    <a id="dark-mode-toggle" class="colorscheme-toggle">
+        <i class="fa fa-adjust fa-fw" aria-hidden="true"></i>
+    </a>
+</div>
+
+
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="/">
+      Nikos Gavalas
+    </a>
+    
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <i class="fa fa-bars fa-fw" aria-hidden="true"></i>
+      </label>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="/posts/">Posts</a>
+            </li>
+          
+        
+        
+      </ul>
+    
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">
+            <a class="title-link" href="https://nikosg.com/solving-2-sat-faster-using-quantum-computing/">
+              Solving 2-SAT faster using Quantum Computing
+            </a>
+          </h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fa fa-calendar" aria-hidden="true"></i>
+              <time datetime='2021-11-05T00:00:00Z'>
+                November 5, 2021
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fa fa-clock-o" aria-hidden="true"></i>
+              6-minute read
+            </span>
+          </div>
+          
+          <div class="categories">
+  <i class="fa fa-folder" aria-hidden="true"></i>
+    <a href="/categories/algorithms/">algorithms</a>
+      <span class="separator">•</span>
+    <a href="/categories/quantum-computing/">quantum computing</a></div>
+
+          <div class="tags">
+  <i class="fa fa-tag" aria-hidden="true"></i>
+    <span class="tag">
+      <a href="/tags/algorithms/">algorithms</a>
+    </span>
+      <span class="separator">•</span>
+    <span class="tag">
+      <a href="/tags/programming/">programming</a>
+    </span>
+      <span class="separator">•</span>
+    <span class="tag">
+      <a href="/tags/quantum-computing/">quantum computing</a>
+    </span></div>
+
+        </div>
+      </header>
+
+      <div>
+        
+        <h2 id="the-2-sat-problem">
+  The 2-SAT problem
+  <a class="heading-link" href="#the-2-sat-problem">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h2>
+<p>The Boolean Satisfiability problem, also known as the SAT problem, is the problem of determining if there exists a set of values for the variables of a boolean expression so that it evaluates to <em>TRUE</em>. It has been proven to be NP-Complete, and is one of the most important and famous problems in Computer Science because it is the problem most used to prove other problems to belong in the complexity class NP, via <em>reductions</em>.</p>
+<p>The SAT problem has lots of forms, one of them is the 2-SAT, in which the boolean expression is in <em>Conjunctive Normal Form</em>, i.e. a conjunction of clauses, and each of these clauses consist of 2 variables.</p>
+<p>All known algorithms that solve the SAT are inefficient as they run in exponential time, and not much can be done to speed them up on a classical computer. However, by using a quantum computer and Grover&rsquo;s algorithm, one can achieve an impressive speedup.</p>
+<h2 id="grovers-algorithm">
+  Grover&rsquo;s algorithm
+  <a class="heading-link" href="#grovers-algorithm">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h2>
+<p>Grover&rsquo;s search algorithm is a quantum algorithm that performs database search faster than its classical counterpart, by a polynomial factor. Concretely, if we were to search for example an unordered list of \( N \) elements (random access) looking for a particular element, we would have to look into every element of the list at the worst case, resulting in linear time of execution, \( \mathcal{O}(N) \). This scales exponentially relative to the bits of the input: \( N = 2^n \), so \(\mathcal{O}(2^n) \).</p>
+<p>Grover&rsquo;s can speed up the search in the general case using \( \mathcal{O}(\sqrt{N}) = \mathcal{O}(2^{\frac{n}{2}}) \) quantum gates, so it still exponential but faster by a quadratic factor, which is very useful.</p>
+<h2 id="what-well-be-doing">
+  What we&rsquo;ll be doing
+  <a class="heading-link" href="#what-well-be-doing">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h2>
+<p>We&rsquo;ll be solving a particular instance of the 2-SAT problem, by working our way through the construction of the quantum oracle needed for Grover&rsquo;s and showing that it not only provides an answer, but it also finds all the solutions with only <strong>one</strong> Grover iteration.</p>
+<p>The instance of the 2-SAT we&rsquo;ll be solving is the following:</p>
+<blockquote>
+<p>Given the boolean function \( f(a, b, c, d) = (a \lor \lnot b) \land (a \lor c) \land(\lnot b \lor d)  \land(\lnot a \lor \lnot d) \), find if there exists an assignment of TRUE or FALSE to the variables \( a, b, c, d \) such that \( f(x) \) evaluates to TRUE.</p>
+</blockquote>
+<p>We&rsquo;ll be using IBM&rsquo;s <em>qiskit</em> framework to simulate the quantum computer. IBM also gives us access to actual quantum computers where we can later upload the code and execute it there if we want.</p>
+<h2 id="the-classical-solution">
+  The classical solution
+  <a class="heading-link" href="#the-classical-solution">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h2>
+<p>By bruteforcing the expression, we can see the assignments that satisfy it are \( (a,b,c,d) = \{(0001), (0100), (0101), (1100)\} \):</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="font-weight:bold">from</span> <span style="font-weight:bold">itertools</span> <span style="font-weight:bold">import</span> product
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-style:italic"># reverse ordering due to the little endian bit-order in Qiskit</span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">def</span> f(d, c, b, a):
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">return</span> (a <span style="font-weight:bold">or</span> <span style="font-weight:bold">not</span> b) <span style="font-weight:bold">and</span> (a <span style="font-weight:bold">or</span> c) <span style="font-weight:bold">and</span> (<span style="font-weight:bold">not</span> b <span style="font-weight:bold">or</span> d) <span style="font-weight:bold">and</span> (<span style="font-weight:bold">not</span> a <span style="font-weight:bold">or</span> <span style="font-weight:bold">not</span> d)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>combs = list(product(*([[<span style="font-weight:bold">False</span>, <span style="font-weight:bold">True</span>]] * 4)))
+</span></span><span style="display:flex;"><span>sols = [f(*comb) <span style="font-weight:bold">for</span> comb <span style="font-weight:bold">in</span> combs]
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">for</span> comb, sol <span style="font-weight:bold">in</span> zip(combs, sols):
+</span></span><span style="display:flex;"><span>    print(<span style="font-style:italic">f</span><span style="font-style:italic">&#39;</span><span style="font-weight:bold;font-style:italic">{</span>comb<span style="font-weight:bold;font-style:italic">}</span><span style="font-weight:bold;font-style:italic">\t</span><span style="font-style:italic">-&gt;</span><span style="font-weight:bold;font-style:italic">\t</span><span style="font-weight:bold;font-style:italic">{</span>sol<span style="font-weight:bold;font-style:italic">}</span><span style="font-style:italic">&#39;</span>)
+</span></span></code></pre></div><p>output:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>(False, False, False, False) -&gt; False
+</span></span><span style="display:flex;"><span>(False, False, False, True)  -&gt; True
+</span></span><span style="display:flex;"><span>(False, False, True, False)  -&gt; False
+</span></span><span style="display:flex;"><span>(False, False, True, True)   -&gt; False
+</span></span><span style="display:flex;"><span>(False, True, False, False)  -&gt; True
+</span></span><span style="display:flex;"><span>(False, True, False, True)   -&gt; True
+</span></span><span style="display:flex;"><span>(False, True, True, False)   -&gt; False
+</span></span><span style="display:flex;"><span>(False, True, True, True)    -&gt; False
+</span></span><span style="display:flex;"><span>(True, False, False, False)  -&gt; False
+</span></span><span style="display:flex;"><span>(True, False, False, True)   -&gt; False
+</span></span><span style="display:flex;"><span>(True, False, True, False)   -&gt; False
+</span></span><span style="display:flex;"><span>(True, False, True, True)    -&gt; False
+</span></span><span style="display:flex;"><span>(True, True, False, False)   -&gt; True
+</span></span><span style="display:flex;"><span>(True, True, False, True)    -&gt; False
+</span></span><span style="display:flex;"><span>(True, True, True, False)    -&gt; False
+</span></span><span style="display:flex;"><span>(True, True, True, True)     -&gt; False
+</span></span></code></pre></div><h2 id="the-quantum-solution">
+  The quantum solution
+  <a class="heading-link" href="#the-quantum-solution">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h2>
+<p>First we need to implement the quantum oracle. To do this, it is convenient to re-write the expression as such:</p>
+<p>$$ f = (a \lor \lnot b) \land (a \lor c) \land(\lnot b \lor d) \land(\lnot a \lor \lnot d) $$
+$$ \Rightarrow f = (a + b&rsquo;)(a + c)(b&rsquo; + d)(a&rsquo; + d&rsquo;) $$
+$$ \Rightarrow f = (a&rsquo;b)&rsquo;(a&rsquo;c&rsquo;)&rsquo;(bd&rsquo;)&rsquo;(ad)&rsquo; $$</p>
+<p>We need 4 qubits for the input, i.e. one qubit for each variable, and 4 ancilla qubits for each clause. Each clause will use one Toffoli gate, controled either low or high, depending on whether the variable in the expression is NOT-ed or not respectively. The Toffolis control an ancilla qubit each, and all the ancillas control a larger active-low C-NOT gate which controls Grover&rsquo;s phase-cickback qubit \( | - \rangle \).</p>
+<p>Now for the quantum oracle, we need to make it a unitary transformation, by definition. To do that, we just &ldquo;mirror&rdquo; the gates. The final output will be like this:</p>
+<img class="img-center" src="/images/grovers-unitary.png" alt="Grovers Unitary" />
+<p>Now, we add the following:</p>
+<ol>
+<li>The Hadamard gates, to create a superposition of all the qubits</li>
+<li>The \( | - \rangle \) qubit</li>
+<li>Grover&rsquo;s processing step</li>
+<li>Measurement step</li>
+</ol>
+<p>Final circuit looks like this:</p>
+<img class="img-center" src="/images/grovers-circuit.png" alt="Grovers Circuit" />
+<p>You can also find it <a href="https://algassert.com/quirk#circuit=%7B%22cols%22:%5B%5B%22H%22,%22H%22,%22H%22,%22H%22,1,1,1,1,%22X%22%5D,%5B1,1,1,1,1,1,1,1,%22H%22%5D,%5B%22%E2%97%A6%22,%22%E2%80%A2%22,1,1,%22X%22%5D,%5B%22%E2%97%A6%22,1,%22%E2%97%A6%22,1,1,%22X%22%5D,%5B1,%22%E2%80%A2%22,1,%22%E2%97%A6%22,1,1,%22X%22%5D,%5B%22%E2%80%A2%22,1,1,%22%E2%80%A2%22,1,1,1,%22X%22%5D,%5B1,1,1,1,%22%E2%97%A6%22,%22%E2%97%A6%22,%22%E2%97%A6%22,%22%E2%97%A6%22,%22X%22%5D,%5B%22%E2%80%A2%22,1,1,%22%E2%80%A2%22,1,1,1,%22X%22%5D,%5B1,%22%E2%80%A2%22,1,%22%E2%97%A6%22,1,1,%22X%22%5D,%5B%22%E2%97%A6%22,1,%22%E2%97%A6%22,1,1,%22X%22%5D,%5B%22%E2%97%A6%22,%22%E2%80%A2%22,1,1,%22X%22%5D,%5B%22H%22,%22H%22,%22H%22,%22H%22%5D,%5B%22%E2%97%A6%22,%22%E2%97%A6%22,%22%E2%97%A6%22,%22%E2%97%A6%22,1,1,1,1,%22X%22%5D,%5B%22H%22,%22H%22,%22H%22,%22H%22%5D%5D,%22gates%22:%5B%7B%22id%22:%22~6u16%22,%22circuit%22:%7B%22cols%22:%5B%5B%22%E2%97%A6%22,%22%E2%80%A2%22,1,1,%22X%22%5D,%5B%22%E2%97%A6%22,1,%22%E2%97%A6%22,1,1,%22X%22%5D,%5B1,%22%E2%80%A2%22,1,%22%E2%97%A6%22,1,1,%22X%22%5D,%5B%22%E2%80%A2%22,1,1,%22%E2%80%A2%22,1,1,1,%22X%22%5D,%5B1,1,1,1,%22%E2%97%A6%22,%22%E2%97%A6%22,%22%E2%97%A6%22,%22%E2%97%A6%22,%22X%22%5D,%5B%22%E2%80%A2%22,1,1,%22%E2%80%A2%22,1,1,1,%22X%22%5D,%5B1,%22%E2%80%A2%22,1,%22%E2%97%A6%22,1,1,%22X%22%5D,%5B%22%E2%97%A6%22,1,%22%E2%97%A6%22,1,1,%22X%22%5D,%5B%22%E2%97%A6%22,%22%E2%80%A2%22,1,1,%22X%22%5D,%5B%22H%22,%22H%22,%22H%22,%22H%22,%22H%22,%22H%22,%22H%22,%22H%22%5D,%5B%22%E2%97%A6%22,%22%E2%97%A6%22,%22%E2%97%A6%22,%22%E2%97%A6%22,%22%E2%97%A6%22,%22%E2%97%A6%22,%22%E2%97%A6%22,%22%E2%97%A6%22,%22X%22%5D,%5B%22H%22,%22H%22,%22H%22,%22H%22,%22H%22,%22H%22,%22H%22,%22H%22%5D%5D%7D%7D,%7B%22id%22:%22~dltg%22,%22circuit%22:%7B%22cols%22:%5B%5B%22%E2%97%A6%22,%22%E2%80%A2%22,1,1,%22X%22%5D,%5B%22%E2%97%A6%22,1,%22%E2%97%A6%22,1,1,%22X%22%5D,%5B1,%22%E2%80%A2%22,1,%22%E2%97%A6%22,1,1,%22X%22%5D,%5B%22%E2%80%A2%22,1,1,%22%E2%80%A2%22,1,1,1,%22X%22%5D,%5B1,1,1,1,%22%E2%97%A6%22,%22%E2%97%A6%22,%22%E2%97%A6%22,%22%E2%97%A6%22,%22X%22%5D,%5B%22%E2%80%A2%22,1,1,%22%E2%80%A2%22,1,1,1,%22X%22%5D,%5B1,%22%E2%80%A2%22,1,%22%E2%97%A6%22,1,1,%22X%22%5D,%5B%22%E2%97%A6%22,1,%22%E2%97%A6%22,1,1,%22X%22%5D,%5B%22%E2%97%A6%22,%22%E2%80%A2%22,1,1,%22X%22%5D,%5B%22H%22,%22H%22,%22H%22,%22H%22%5D,%5B%22%E2%97%A6%22,%22%E2%97%A6%22,%22%E2%97%A6%22,%22%E2%97%A6%22,1,1,1,1,%22X%22%5D,%5B%22H%22,%22H%22,%22H%22,%22H%22%5D%5D%7D%7D%5D%7D">here</a>, simulated in Quirk.</p>
+<p>Now to implement it in qiskit, we add the following transformations:</p>
+<ul>
+<li>Active low control is an active high control surrounded with \( X \) gates.</li>
+<li>Two \( X \) gates next to each other cancel out because \( X^{2} = I \)</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="font-weight:bold">from</span> <span style="font-weight:bold">lib</span> <span style="font-weight:bold">import</span> QuantumCircuit
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>qc = QuantumCircuit(9, 4)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-style:italic"># initialize output qubit to the &#34;minus&#34; state</span>
+</span></span><span style="display:flex;"><span>qc.x(8)
+</span></span><span style="display:flex;"><span>qc.h(8)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-style:italic"># superpose</span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> range(4):
+</span></span><span style="display:flex;"><span>    qc.h(i)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>qc.barrier()    
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-style:italic"># apply unitary</span>
+</span></span><span style="display:flex;"><span>qc.x(0)
+</span></span><span style="display:flex;"><span>qc.x(2)
+</span></span><span style="display:flex;"><span>qc.mct([0, 1], 4)
+</span></span><span style="display:flex;"><span>qc.mct([0, 2], 5)
+</span></span><span style="display:flex;"><span>qc.x(3)
+</span></span><span style="display:flex;"><span>qc.x(0)
+</span></span><span style="display:flex;"><span>qc.mct([1, 3], 6)
+</span></span><span style="display:flex;"><span>qc.x(3)
+</span></span><span style="display:flex;"><span>qc.mct([0, 3], 7)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>qc.x(4)
+</span></span><span style="display:flex;"><span>qc.x(5)
+</span></span><span style="display:flex;"><span>qc.x(6)
+</span></span><span style="display:flex;"><span>qc.x(7)
+</span></span><span style="display:flex;"><span>qc.mct([4, 5, 6, 7], 8)
+</span></span><span style="display:flex;"><span>qc.x(7)
+</span></span><span style="display:flex;"><span>qc.x(6)
+</span></span><span style="display:flex;"><span>qc.x(5)
+</span></span><span style="display:flex;"><span>qc.x(4)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>qc.mct([0, 3], 7)
+</span></span><span style="display:flex;"><span>qc.x(3)
+</span></span><span style="display:flex;"><span>qc.mct([1, 3], 6)
+</span></span><span style="display:flex;"><span>qc.x(0)
+</span></span><span style="display:flex;"><span>qc.x(3)
+</span></span><span style="display:flex;"><span>qc.mct([0, 2], 5)
+</span></span><span style="display:flex;"><span>qc.mct([0, 1], 4)
+</span></span><span style="display:flex;"><span>qc.x(2)
+</span></span><span style="display:flex;"><span>qc.x(0)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>qc.barrier()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-style:italic"># process (apply diffuser)</span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> range(4):
+</span></span><span style="display:flex;"><span>    qc.h(i)
+</span></span><span style="display:flex;"><span>    qc.x(i)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>qc.mct(list(range(4)), 8)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> range(4):
+</span></span><span style="display:flex;"><span>    qc.x(i)
+</span></span><span style="display:flex;"><span>    qc.h(i)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span><span style="font-style:italic"># measure the 4 LSQs</span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> range(4):
+</span></span><span style="display:flex;"><span>    qc.measure(i, i)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>_ = qc.draw(fold=-1, output=<span style="font-style:italic">&#39;mpl&#39;</span>)
+</span></span></code></pre></div><img class="img-center" src="/images/grovers-circuit-2.png" alt="Grovers Circuit 2" />
+<p>Now we proceed to simulate the circuit:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="font-weight:bold">from</span> <span style="font-weight:bold">qiskit</span> <span style="font-weight:bold">import</span> QuantumCircuit
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">from</span> <span style="font-weight:bold">qiskit</span> <span style="font-weight:bold">import</span> assemble, transpile, Aer
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">from</span> <span style="font-weight:bold">qiskit.visualization</span> <span style="font-weight:bold">import</span> plot_histogram
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">def</span> simulate(circuit, shots=2048, plot=<span style="font-weight:bold">True</span>, ints=<span style="font-weight:bold">True</span>, single=<span style="font-weight:bold">True</span>):
+</span></span><span style="display:flex;"><span>    simulator = Aer.get_backend(<span style="font-style:italic">&#39;qasm_simulator&#39;</span>)
+</span></span><span style="display:flex;"><span>    transpiled_dj_circuit = transpile(circuit, simulator)
+</span></span><span style="display:flex;"><span>    qobj = assemble(transpiled_dj_circuit, shots=shots)
+</span></span><span style="display:flex;"><span>    results = simulator.run(qobj).result()
+</span></span><span style="display:flex;"><span>    answer = results.get_counts()
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">if</span> ints:
+</span></span><span style="display:flex;"><span>        answer = {int(k, 2): v <span style="font-weight:bold">for</span> k, v <span style="font-weight:bold">in</span> answer.items()}
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">if</span> plot:
+</span></span><span style="display:flex;"><span>        plot_histogram(answer)
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">if</span> single:
+</span></span><span style="display:flex;"><span>        answer = max(answer, key=answer.get)
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">return</span> answer
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>res = simulate(qc, single=<span style="font-weight:bold">False</span>, plot=<span style="font-weight:bold">True</span>, ints=<span style="font-weight:bold">False</span>)
+</span></span></code></pre></div><img class="img-center" src="/images/grovers-amplitudes.png" alt="Grovers Amplitudes" />
+<p>We can see that the probability amplitudes of the states that correspond to the \( k \) solutions  are equal approximately to \( \frac{1}{k} \), and the rest are zero.</p>
+<p>So indeed, with one run we get all the solutions at once. Very satisfying.</p>
+<h2 id="concluding-remarks">
+  Concluding remarks
+  <a class="heading-link" href="#concluding-remarks">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h2>
+<ul>
+<li>This process can be easily generalized to solve 3-SAT or k-SAT.</li>
+<li>With qiskit, it is very easy to upload this and run it on a real quantum computer.
+It&rsquo;d be fun.</li>
+<li>I am also sure there are ways to optimize this solution and use fewer gates.</li>
+</ul>
+
+      </div>
+
+
+      <footer>
+        
+
+
+        
+        
+        
+      </footer>
+    </article>
+
+    
+  </section>
+
+      </div>
+
+      
+  <footer class="footer">
+    <section class="container">
+      
+      
+        ©
+        
+          2018 -
+        
+        2024
+        
+      
+      
+      
+    </section>
+  </footer>
+
+
+    </main>
+
+    
+      
+      <script src="/js/coder.min.cb0c595e02234420f3ad3886bf4a9bd2874d0e1e78e090138a9ef158b35aaf17.js" integrity="sha256-ywxZXgIjRCDzrTiGv0qb0odNDh544JATip7xWLNarxc="></script>
+    
+
+    
+      <script src="/js/custom.js"></script>
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    
+      <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/highlight.min.js"></script>
+    
+
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-122370931-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+  </body>
+
+</html>

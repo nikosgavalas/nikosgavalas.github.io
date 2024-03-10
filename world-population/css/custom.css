@@ -1,0 +1,22 @@
+.card {
+  margin-top: 10px;
+}
+
+#selectedTime {
+  padding-left: 1px;
+  padding-right: 1px;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 5px;
+}
+
+.chart-label {
+  font-size: smaller;
+}
+
+/* .card-body {
+  border-top: 1px;
+  border-style: solid;
+  border-width: 1px 0px 0px 0px;
+  border-color: lightgray;
+} */

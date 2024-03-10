@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>algorithms on Nikos Gavalas</title>
+    <link>https://nikosg.com/tags/algorithms/</link>
+    <description>Recent content in algorithms on Nikos Gavalas</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 12 Mar 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://nikosg.com/tags/algorithms/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Volume Rendering for 3D Data Visualization</title>
+      <link>https://nikosg.com/volume-rendering-for-3d-data-visualization/</link>
+      <pubDate>Sat, 12 Mar 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://nikosg.com/volume-rendering-for-3d-data-visualization/</guid>
+      <description>Introduction Volume rendering is a collection of methods to visualize volumes, which we often encounter in scientific, engineering, and biomedical domains.
+Volume datasets are essentially sampled 3D scalar fields: \( f[m, n, k]: \mathbb{N^3} \rightarrow \mathbb{N} \). We refer to the pairs of 3D coordinates and their corresponding intensity values as Voxels (the 3D equivalent of pixels).
+Volume rendering can be divided in three main categories:
+2D visualization of slices of the volume, known as MPR (Multi-Planar Reconstruction) Indirect 3D visualization - Isosurfaces Direct 3D visualization known as DVR (Direct Volume Rendering) Let&amp;rsquo;s examine each category separately.</description>
+    </item>
+    
+    <item>
+      <title>5 Applications of Quantum Information</title>
+      <link>https://nikosg.com/5-applications-of-quantum-information/</link>
+      <pubDate>Mon, 15 Nov 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://nikosg.com/5-applications-of-quantum-information/</guid>
+      <description>Quantum Computers have gained much popularity recently because of their potential to outperform their classical counterparts in a variety of tasks.
+In this post I&amp;rsquo;ll briefly go over some of their applications in Computing and Communication that fascinated me.
+Quantum Algorithms Quantum Computers process information that, contrary to classical computers, is encoded in qubits (quantum states) instead of bits (logical states). A qubit is a vector in the 2-dimensional complex vector space (Hilbert space).</description>
+    </item>
+    
+    <item>
+      <title>Solving 2-SAT faster using Quantum Computing</title>
+      <link>https://nikosg.com/solving-2-sat-faster-using-quantum-computing/</link>
+      <pubDate>Fri, 05 Nov 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://nikosg.com/solving-2-sat-faster-using-quantum-computing/</guid>
+      <description>The 2-SAT problem The Boolean Satisfiability problem, also known as the SAT problem, is the problem of determining if there exists a set of values for the variables of a boolean expression so that it evaluates to TRUE. It has been proven to be NP-Complete, and is one of the most important and famous problems in Computer Science because it is the problem most used to prove other problems to belong in the complexity class NP, via reductions.</description>
+    </item>
+    
+    <item>
+      <title>Anomaly Detection on Data Streams in a few lines of Bash</title>
+      <link>https://nikosg.com/anomaly-detection-on-data-streams-in-a-few-lines-of-bash/</link>
+      <pubDate>Sat, 02 Nov 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://nikosg.com/anomaly-detection-on-data-streams-in-a-few-lines-of-bash/</guid>
+      <description>Let&amp;rsquo;s assume that we have a stream of data points, and we want to detect outliers i.e. points that deviate from the norm. This is interesting because usually such data are linked to faulty or malicious behavior.
+The fact that our data points are available as a stream means that we cannot &amp;ldquo;look&amp;rdquo; at them more than once. Therefore we need an algorithm with complexity linear to the number of points of the stream.</description>
+    </item>
+    
+    <item>
+      <title>Solving the Multiple Choice Knapsack Problem</title>
+      <link>https://nikosg.com/solving-the-multiple-choice-knapsack-problem/</link>
+      <pubDate>Wed, 06 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://nikosg.com/solving-the-multiple-choice-knapsack-problem/</guid>
+      <description>The 0-1 Knapsack problem is a popular combinatorial optimization problem:
+Given a set of n items, each having a value \( p_i \) and a weight of \( w_i \), find a subset of these items such that the total value is maximized, while keeping the total weight of the items under a given constant weight capacity W.
+Formally, we need to maximize \( \sum_{i=1}^{n}{p_{i}f_{i}} \), while subjecting to \( \sum_{i=1}^{n}{w_{i}f_{i}} \le W \), \( f_i \in \{0, 1\}, \forall i \in \{ 1, &amp;hellip;, n\} \).</description>
+    </item>
+    
+  </channel>
+</rss>

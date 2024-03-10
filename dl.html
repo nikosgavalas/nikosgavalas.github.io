@@ -1,0 +1,942 @@
+<!DOCTYPE html><html><head>
+      <title>| Deep Learning Project - Paper Reproduction
+| House-GAN: Relational Generative Adversarial Networks for Graph-constrained House Layout Generation
+</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.13.18/dist/katex.min.css">
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      <style>
+
+ 
+/** * prism.js Github theme based on GitHub's theme. * @author Sam Clarke */
+code[class*="language-"], pre[class*="language-"] {
+     color: #333;
+     background: none;
+     font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+     text-align: left;
+     white-space: pre;
+     word-spacing: normal;
+     word-break: normal;
+     word-wrap: normal;
+     line-height: 1.4;
+     -moz-tab-size: 8;
+     -o-tab-size: 8;
+     tab-size: 8;
+     -webkit-hyphens: none;
+     -moz-hyphens: none;
+     -ms-hyphens: none;
+     hyphens: none;
+}
+/* Code blocks */
+ pre[class*="language-"] {
+     padding: .8em;
+     overflow: auto;
+    /* border: 1px solid #ddd;
+     */
+     border-radius: 3px;
+    /* background: #fff;
+     */
+     background: #f5f5f5;
+}
+/* Inline code */
+ :not(pre) > code[class*="language-"] {
+     padding: .1em;
+     border-radius: .3em;
+     white-space: normal;
+     background: #f5f5f5;
+}
+ .token.comment, .token.blockquote {
+     color: #969896;
+}
+ .token.cdata {
+     color: #183691;
+}
+ .token.doctype, .token.punctuation, .token.variable, .token.macro.property {
+     color: #333;
+}
+ .token.operator, .token.important, .token.keyword, .token.rule, .token.builtin {
+     color: #a71d5d;
+}
+ .token.string, .token.url, .token.regex, .token.attr-value {
+     color: #183691;
+}
+ .token.property, .token.number, .token.boolean, .token.entity, .token.atrule, .token.constant, .token.symbol, .token.command, .token.code {
+     color: #0086b3;
+}
+ .token.tag, .token.selector, .token.prolog {
+     color: #63a35c;
+}
+ .token.function, .token.namespace, .token.pseudo-element, .token.class, .token.class-name, .token.pseudo-class, .token.id, .token.url-reference .token.variable, .token.attr-name {
+     color: #795da3;
+}
+ .token.entity {
+     cursor: help;
+}
+ .token.title, .token.title .token.punctuation {
+     font-weight: bold;
+     color: #1d3e81;
+}
+ .token.list {
+     color: #ed6a43;
+}
+ .token.inserted {
+     background-color: #eaffea;
+     color: #55a532;
+}
+ .token.deleted {
+     background-color: #ffecec;
+     color: #bd2c00;
+}
+ .token.bold {
+     font-weight: bold;
+}
+ .token.italic {
+     font-style: italic;
+}
+/* JSON */
+ .language-json .token.property {
+     color: #183691;
+}
+ .language-markup .token.tag .token.punctuation {
+     color: #333;
+}
+/* CSS */
+ code.language-css, .language-css .token.function {
+     color: #0086b3;
+}
+/* YAML */
+ .language-yaml .token.atrule {
+     color: #63a35c;
+}
+ code.language-yaml {
+     color: #183691;
+}
+/* Ruby */
+ .language-ruby .token.function {
+     color: #333;
+}
+/* Markdown */
+ .language-markdown .token.url {
+     color: #795da3;
+}
+/* Makefile */
+ .language-makefile .token.symbol {
+     color: #795da3;
+}
+ .language-makefile .token.variable {
+     color: #183691;
+}
+ .language-makefile .token.builtin {
+     color: #0086b3;
+}
+/* Bash */
+ .language-bash .token.keyword {
+     color: #0086b3;
+}
+/* highlight */
+ pre[data-line] {
+     position: relative;
+     padding: 1em 0 1em 3em;
+}
+ pre[data-line] .line-highlight-wrapper {
+     position: absolute;
+     top: 0;
+     left: 0;
+     background-color: transparent;
+     display: block;
+     width: 100%;
+}
+ pre[data-line] .line-highlight {
+     position: absolute;
+     left: 0;
+     right: 0;
+     padding: inherit 0;
+     margin-top: 1em;
+     background: hsla(24, 20%, 50%,.08);
+     background: linear-gradient(to right, hsla(24, 20%, 50%,.1) 70%, hsla(24, 20%, 50%,0));
+     pointer-events: none;
+     line-height: inherit;
+     white-space: pre;
+}
+ pre[data-line] .line-highlight:before, pre[data-line] .line-highlight[data-end]:after {
+     content: attr(data-start);
+     position: absolute;
+     top: .4em;
+     left: .6em;
+     min-width: 1em;
+     padding: 0 .5em;
+     background-color: hsla(24, 20%, 50%,.4);
+     color: hsl(24, 20%, 95%);
+     font: bold 65%/1.5 sans-serif;
+     text-align: center;
+     vertical-align: .3em;
+     border-radius: 999px;
+     text-shadow: none;
+     box-shadow: 0 1px white;
+}
+ pre[data-line] .line-highlight[data-end]:after {
+     content: attr(data-end);
+     top: auto;
+     bottom: .4em;
+}
+ html body{
+     font-family:"Helvetica Neue",Helvetica,"Segoe UI",Arial,freesans,sans-serif;
+     font-size:16px;
+     line-height:1.6;
+     color:#333;
+     background-color:#fff;
+     overflow:initial;
+     box-sizing:border-box;
+     word-wrap:break-word
+}
+ html body>:first-child{
+    margin-top:0
+}
+ html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{
+     line-height:1.2;
+    margin-top:1em;
+    margin-bottom:16px;
+    color:#000 
+}
+ html body h1{
+     font-size:2.25em;
+    font-weight:300;
+    padding-bottom:.3em 
+}
+ html body h2{
+     font-size:1.75em;
+    font-weight:400;
+    padding-bottom:.3em 
+}
+ html body h3{
+     font-size:1.5em;
+    font-weight:500 
+}
+ html body h4{
+     font-size:1.25em;
+    font-weight:600 
+}
+ html body h5{
+     font-size:1.1em;
+    font-weight:600 
+}
+ html body h6{
+     font-size:1em;
+    font-weight:600 
+}
+ html body h1,html body h2,html body h3,html body h4,html body h5{
+     font-weight:600 
+}
+ html body h5{
+    font-size:1em
+}
+ html body h6{
+    color:#5c5c5c
+}
+ html body strong{
+    color:#000
+}
+ html body del{
+    color:#5c5c5c
+}
+ html body a:not([href]){
+    color:inherit;
+    text-decoration:none
+}
+ html body a{
+    color:#08c;
+    text-decoration:none
+}
+ html body a:hover{
+    color:#00a3f5;
+    text-decoration:none
+}
+ html body img{
+    max-width:100%
+}
+ html body>p{
+    margin-top:0;
+    margin-bottom:16px;
+    word-wrap:break-word
+}
+ html body>ul,html body>ol{
+    margin-bottom:16px
+}
+ html body ul,html body ol{
+    padding-left:2em
+}
+ html body ul.no-list,html body ol.no-list{
+    padding:0;
+    list-style-type:none
+}
+ html body ul ul,html body ul ol,html body ol ol,html body ol ul{
+    margin-top:0;
+    margin-bottom:0
+}
+ html body li{
+    margin-bottom:0
+}
+html body li.task-list-item{
+    list-style:none
+}
+ html body li>p{
+    margin-top:0;
+    margin-bottom:0
+}
+ html body .task-list-item-checkbox{
+    margin:0 .2em .25em -1.8em;
+    vertical-align:middle
+}
+ html body .task-list-item-checkbox:hover{
+    cursor:pointer
+}
+ html body blockquote{
+    margin:16px 0;
+    font-size:inherit;
+    padding:0 15px;
+    color:#5c5c5c;
+    background-color:#f0f0f0;
+    border-left:4px solid #d6d6d6
+}
+ html body blockquote>:first-child{
+    margin-top:0
+}
+ html body blockquote>:last-child{
+    margin-bottom:0
+}
+ html body hr{
+    height:4px;
+    margin:32px 0;
+    background-color:#d6d6d6;
+    border:0 none
+}
+ html body table{
+    margin-top: 10px;
+    margin-bottom: 15px;
+    border-collapse: collapse;
+    border-spacing:0;
+    overflow:auto;
+    word-break:normal;
+    word-break:keep-all
+}
+ html body table th{
+    font-weight:bold;
+    color:#000
+}
+ html body table td,html body table th{
+    border:1px solid #d6d6d6;
+    padding:6px 13px
+}
+ html body dl{
+    padding:0
+}
+ html body dl dt{
+    padding:0;
+    margin-top:16px;
+    font-size:1em;
+    font-style:italic;
+    font-weight:bold
+}
+ html body dl dd{
+    padding:0 16px;
+    margin-bottom:16px
+}
+ html body code{
+    font-family:Menlo,Monaco,Consolas,'Courier New',monospace;
+    font-size:.85em !important;
+    color:#000;
+    background-color:#f0f0f0;
+    border-radius:3px;
+    padding:.2em 0
+}
+ html body code::before,html body code::after{
+    letter-spacing:-0.2em;
+    content:"\00a0"
+}
+ html body pre>code{
+    padding:0;
+    margin:0;
+    font-size:.85em !important;
+    word-break:normal;
+    white-space:pre;
+    background:transparent;
+    border:0
+}
+ html body .highlight{
+    margin-bottom:16px
+}
+ html body .highlight pre,html body pre{
+    padding:1em;
+    overflow:auto;
+    font-size:.85em !important;
+    line-height:1.45;
+    border:#d6d6d6;
+    border-radius:3px
+}
+ html body .highlight pre{
+    margin-bottom:0;
+    word-break:normal
+}
+ html body pre code,html body pre tt{
+    display:inline;
+    max-width:initial;
+    padding:0;
+    margin:0;
+    overflow:initial;
+    line-height:inherit;
+    word-wrap:normal;
+    background-color:transparent;
+    border:0
+}
+ html body pre code:before,html body pre tt:before,html body pre code:after,html body pre tt:after{
+    content:normal
+}
+ html body p,html body blockquote,html body ul,html body ol,html body dl,html body pre{
+    margin-top:0;
+    margin-bottom:16px
+}
+ html body kbd{
+    color:#000;
+    border:1px solid #d6d6d6;
+    border-bottom:2px solid #c7c7c7;
+    padding:2px 4px;
+    background-color:#f0f0f0;
+    border-radius:3px
+}
+@media print{
+    html body{
+        background-color:#fff
+    }
+     html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{
+        color:#000;
+        page-break-after:avoid
+    }
+     html body blockquote{
+        color:#5c5c5c
+    }
+     html body pre{
+        page-break-inside:avoid
+    }
+     html body table{
+        display:table
+    }
+     html body img{
+        display:block;
+        max-width:100%;
+        max-height:100%
+    }
+     html body pre,html body code{
+        word-wrap:break-word;
+        white-space:pre
+    }
+}
+ .markdown-preview{
+    width:100%;
+    height:100%;
+    box-sizing:border-box
+}
+ .markdown-preview .pagebreak,.markdown-preview .newpage{
+    page-break-before:always
+}
+ .markdown-preview pre.line-numbers{
+    position:relative;
+    padding-left:3.8em;
+    counter-reset:linenumber
+}
+ .markdown-preview pre.line-numbers>code{
+    position:relative
+}
+ .markdown-preview pre.line-numbers .line-numbers-rows{
+    position:absolute;
+    pointer-events:none;
+    top:1em;
+    font-size:100%;
+    left:0;
+    width:3em;
+    letter-spacing:-1px;
+    border-right:1px solid #999;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none
+}
+ .markdown-preview pre.line-numbers .line-numbers-rows>span{
+    pointer-events:none;
+    display:block;
+    counter-increment:linenumber
+}
+ .markdown-preview pre.line-numbers .line-numbers-rows>span:before{
+    content:counter(linenumber);
+    color:#999;
+    display:block;
+    padding-right:.8em;
+    text-align:right
+}
+ .markdown-preview .mathjax-exps .MathJax_Display{
+    text-align:center !important
+}
+ .markdown-preview:not([for="preview"]) .code-chunk .btn-group{
+    display:none
+}
+ .markdown-preview:not([for="preview"]) .code-chunk .status{
+    display:none
+}
+ .markdown-preview:not([for="preview"]) .code-chunk .output-div{
+    margin-bottom:16px
+}
+ .scrollbar-style::-webkit-scrollbar{
+    width:8px
+}
+ .scrollbar-style::-webkit-scrollbar-track{
+    border-radius:10px;
+    background-color:transparent
+}
+ .scrollbar-style::-webkit-scrollbar-thumb{
+    border-radius:5px;
+    background-color:rgba(150,150,150,0.66);
+    border:4px solid rgba(150,150,150,0.66);
+    background-clip:content-box
+}
+html body[for="html-export"]:not([data-presentation-mode]){
+    position:relative;
+    width:100%;
+    height:100%;
+    top:0;
+    left:0;
+    margin:0;
+    padding:0;
+    overflow:auto
+}
+html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{
+    position:relative;
+    top:0
+}
+@media screen and (min-width:914px){
+    html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{
+        padding:2em calc(50% - 457px + 2em)
+    }
+}
+@media screen and (max-width:914px){
+    html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{
+        padding:2em
+    }
+}
+@media screen and (max-width:450px){
+    html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{
+        font-size:14px !important;
+        padding:1em
+    }
+}
+@media print{
+    html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{
+        display:none
+    }
+}
+html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{
+    position:fixed;
+    bottom:8px;
+    left:8px;
+    font-size:28px;
+    cursor:pointer;
+    color:inherit;
+    z-index:99;
+    width:32px;
+    text-align:center;
+    opacity:.4
+}
+html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn{
+    opacity:1
+}
+html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc{
+    position:fixed;
+    top:0;
+    left:0;
+    width:300px;
+    height:100%;
+    padding:32px 0 48px 0;
+    font-size:14px;
+    box-shadow:0 0 4px rgba(150,150,150,0.33);
+    box-sizing:border-box;
+    overflow:auto;
+    background-color:inherit
+}
+html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar{
+    width:8px
+}
+html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track{
+    border-radius:10px;
+    background-color:transparent
+}
+html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb{
+    border-radius:5px;
+    background-color:rgba(150,150,150,0.66);
+    border:4px solid rgba(150,150,150,0.66);
+    background-clip:content-box
+}
+html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a{
+    text-decoration:none
+}
+html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{
+    padding:0 1.6em;
+    margin-top:.8em
+}
+html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc li{
+    margin-bottom:.8em
+}
+html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{
+    list-style-type:none
+}
+html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{
+    left:300px;
+    width:calc(100% - 300px);
+    padding:2em calc(50% - 457px - 150px);
+    margin:0;
+    box-sizing:border-box
+}
+@media screen and (max-width:1274px){
+    html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{
+        padding:2em
+    }
+}
+@media screen and (max-width:450px){
+    html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{
+        width:100%
+    }
+}
+html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview{
+    left:50%;
+    transform:translateX(-50%)
+}
+html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc{
+    display:none
+}
+
+
+/* custom CSS */
+img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+table {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Please visit the URL below for more information: */
+/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+
+      </style>
+    </head>
+    <body for="html-export">
+      <div class="mume markdown-preview  ">
+      <h1 class="mume-header" id="paper-reproduction-house-gan-relational-generative-adversarial-networks-for-graph-constrained-house-layout-generation">Paper Reproduction: &quot;House-GAN: Relational Generative Adversarial Networks for Graph-constrained House Layout Generation&quot;</h1>
+
+<ul>
+<li>Athanasios Theocharis (<a href="mailto:A.Theocharis-1@student.tudelft.nl">A.Theocharis-1@student.tudelft.nl</a>, 5621771)</li>
+<li>Konstantinos Krachtopoulos - (<a href="mailto:K.krachtopoulos@student.tudelft.nl">K.krachtopoulos@student.tudelft.nl</a>, 5472539)</li>
+<li>Markos Gkozntaris - (<a href="mailto:m.gkozntaris@student.tudelft.nl">m.gkozntaris@student.tudelft.nl</a>, 5347955)</li>
+<li>Nikolaos Gavalas - (<a href="mailto:n.gavalas@student.tudelft.nl">n.gavalas@student.tudelft.nl</a>, 5514762)</li>
+</ul>
+<h2 class="mume-header" id="goal-of-the-blogpost">Goal of the blogpost</h2>
+
+<p>This blogpost tries to reimplement the code of paper &quot;<a href="https://arxiv.org/abs/2003.06988">House-GAN</a>: Relational Generative Adversarial Networks for Graph-constrained house layout generation&quot; from Nauata et. al. [1] in a more efficient way. We mention the main points of improvement and try to quantify them in terms of runtime performance. Finally, we try to shed a little bit more light in the new ConvMPN layers.</p>
+<h2 class="mume-header" id="introduction">Introduction</h2>
+
+<p>Imagine being so tired of the city life, that you decide to abandon it and have a peaceful life in a small village! After a lot of search, you find a very picturesque village in South Holland, and you immediately feel that this is the ideal place for your future life. But there is one problem! There is no house that fits your exact needs. Hence, you decide to build your own house. You hire an architect and ask him/her to design a floorplan based on your preferences and needs.</p>
+<p>After 2 weeks, he/she shows you the design. However, it is not how you exactly imagined it! The architect promises that in two more weeks he/she will deliver the floorplan of your dreams. This iteration continues, until you lose all hope that you will get what you dreamed of after all.</p>
+<p>But don&apos;t lose hope yet! The paper <a href="https://arxiv.org/abs/2003.06988">House-GAN</a> by Nuata et. al. (2020) (GitHub Repository <a href="https://github.com/ennauata/housegan">here</a>) promises to simplify the process of floorplan generation! How cool is that?</p>
+<h2 class="mume-header" id="paper-description">Paper description</h2>
+
+<p>The paper employs a Generative Adversarial Network (GAN), which takes as input a bubble diagram representing the connectivity of a floorplan. The bubbles depict the room types, and the links connecting the bubbles depict the adjacency between the rooms. The final output is a 32x32 pixels picture of a floorplan based on the input representation.</p>
+<p>The GAN contains - as usual - a Generator network and a Discriminator network. The job of the Generator is to generate a floorplan that is indistinguishable from real floorplans, while the job of the Discriminator is to successfully discriminate between a real floorplan and a generated one.</p>
+<p>The Generator gets a bubble graph as an input, with a 128-d noise vector and a one-hot 10-d vector (denoting the room type), for each node of the graph. The output is an image of a floorplan. Obviously, the goal is to make it as realistic as possible.</p>
+<p>On the other hand, the Discriminator takes a 32x32-pixel image together with a 10-d one-hot room type vector as input, and produces a boolean response, distinguishing whether the input image is indeed a real one or fake. To achieve that, a similar architecture to the Generator is used, with multiple Leaky-ReLUs.</p>
+<p>The objective of the Generator is to minimize the effectiveness of the Discriminator decisions, while the objective of the Discriminator is to maximize its accuracy of correct predictions of the image source!</p>
+<h2 class="mume-header" id="architecture">Architecture</h2>
+
+<p>As mentioned above, the described architecture is a typical Generative Adversarial Network (GAN), with mainly convolutional and ConvMPN layers.</p>
+<p>The Generator, consists of three Convolutional, two Transpose Convolutional, two ConvMPN, and one Linear layer. Firstly, the input is processed by the Linear layer, which reshapes it to a three-dimensional shape <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mn>8</mn><mo>&#xD7;</mo><mn>8</mn><mo>&#xD7;</mo><mn>16</mn></mrow><annotation encoding="application/x-tex">(8 \times 8 \times 16</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">8</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">&#xD7;</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">8</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">&#xD7;</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">16</span></span></span></span>). Afterwards, two pairs of ConvMPN and Transpose Convolution layers are applied, upsampling the input to shape <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mn>32</mn><mo>&#xD7;</mo><mn>32</mn><mo>&#xD7;</mo><mn>16</mn></mrow><annotation encoding="application/x-tex">(32 \times 32 \times 16</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">32</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">&#xD7;</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">32</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">&#xD7;</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">16</span></span></span></span>). Finally, two Convolutional layers with Leaky ReLU activations and one with <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>t</mi><mi>a</mi><mi>n</mi><mi>h</mi></mrow><annotation encoding="application/x-tex">(tanh</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">t</span><span class="mord mathnormal">anh</span></span></span></span>) activation are applied and produce the final image generated image.</p>
+<p>The Discriminator contains a similar architecture but in the backward direction. First, the <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mn>32</mn><mo>&#xD7;</mo><mn>32</mn><mo>&#xD7;</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">(32 \times 32 \times 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">32</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">&#xD7;</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">32</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">&#xD7;</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span>) image input passes through three consecutive Convolutional layers with Leaky ReLU actiovation. These layers increase the size of the input to <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mn>32</mn><mo>&#xD7;</mo><mn>32</mn><mo>&#xD7;</mo><mn>16</mn></mrow><annotation encoding="application/x-tex">(32 \times 32 \times 16</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">32</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">&#xD7;</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">32</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">&#xD7;</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">16</span></span></span></span>). Afterwards, two pairs of Convolutional and ConvMPN layers are applied, and downsize the input to size <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mn>32</mn><mo>&#xD7;</mo><mn>32</mn><mo>&#xD7;</mo><mn>16</mn></mrow><annotation encoding="application/x-tex">(32 \times 32 \times 16</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">32</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">&#xD7;</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">32</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">&#xD7;</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">16</span></span></span></span>). Three additional Convolutional layers combined with Leaky ReLU activations translate the input to <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mn>1</mn><mo>&#xD7;</mo><mn>1</mn><mo>&#xD7;</mo><mn>128</mn></mrow><annotation encoding="application/x-tex">(1 \times 1 \times 128</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">&#xD7;</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">&#xD7;</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">128</span></span></span></span>) shape. Finally, a linear layer transforms the input to a scalar value.</p>
+<h3 class="mume-header" id="conv-mpn">Conv-MPN</h3>
+
+<p>Convolutional Message Passing Neural Network (Conv-MPN) was initially created by the <a href="https://github.com/zhangfuyang/Conv-MPN">same group of researchers</a> aiming for Structured Outdoor Architecture Reconstruction. Its main use is on Graph Neural Networks, with the specific purpose of accounting for spatial relationships between the nodes - rooms in this scenario. To update each node&apos;s information, a convolution is applied on a tensor that contains:</p>
+<ul>
+<li>the node</li>
+<li>a (sum) pool of the neighbouring nodes</li>
+<li>a (sum) pool of the non-neighbouring nodes</li>
+</ul>
+<p>The pooling allows the concatenation of dense information, and the convolution is mainly used for its spatial reasoning abilites. A major difference between a vanilla Graph Neural Network is the replacement of 1D numerical vector as a node with a 3D spatial feature volume, to aid in the improvement of the convolution&apos;s results.</p>
+<p><img src="./assets/eq1.png" alt="Eq.1"></p>
+<h2 class="mume-header" id="code-improvements">Code Improvements</h2>
+
+<p>Throughout our result reproduction efforts, we ran and trained both our models and the original ones. We managed to improve its efficiency, by adding multi-GPU capabilities in parts of the training procedure, removed unnecessary transitions of Tensors from CPU to GPU and removed unnecessary function calls. The comparison was made for a training loop on 4 Tesla T4 GPUs.</p>
+<p>Time for 1 epoch w/ 32 sized batch in target set D (in seconds):</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Original Code</th>
+<th>Original Code w/ improvements</th>
+<th>Our Code</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">940.430</td>
+<td>747.442</td>
+<td>620.233</td>
+</tr>
+</tbody>
+</table>
+<p>The tool used for timing function runtime and training time is the profiler provided by PyCharm.</p>
+<h3 class="mume-header" id="preallocating-tensors">Preallocating tensors</h3>
+
+<p>In the data loaders and specifically in the collation function, the masks, nodes and edges in the batch were being populated via appending to python lists, which is notorious for the performance issues it causes in terms of memory usage and execution time. What we do instead is preallocate the tensors and populate them using slices. For example:</p>
+<pre data-role="codeBlock" data-info="python" class="language-python">all_rooms_mks <span class="token operator">=</span> torch<span class="token punctuation">.</span>empty<span class="token punctuation">(</span><span class="token punctuation">(</span>n_rooms_total<span class="token punctuation">,</span> IMAGE_SIZE_OUT<span class="token punctuation">,</span> IMAGE_SIZE_OUT<span class="token punctuation">)</span><span class="token punctuation">,</span> dtype<span class="token operator">=</span>torch<span class="token punctuation">.</span><span class="token builtin">float</span><span class="token punctuation">)</span>
+all_nodes <span class="token operator">=</span> torch<span class="token punctuation">.</span>empty<span class="token punctuation">(</span><span class="token punctuation">(</span>n_rooms_total<span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">,</span> dtype<span class="token operator">=</span>torch<span class="token punctuation">.</span><span class="token builtin">float</span><span class="token punctuation">)</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token keyword keyword-for">for</span> i<span class="token punctuation">,</span> <span class="token punctuation">(</span>rooms_mks<span class="token punctuation">,</span> nodes<span class="token punctuation">,</span> edges<span class="token punctuation">)</span> <span class="token keyword keyword-in">in</span> <span class="token builtin">enumerate</span><span class="token punctuation">(</span>batch<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+    all_rooms_mks<span class="token punctuation">[</span>node_offset<span class="token punctuation">:</span>node_offset <span class="token operator">+</span> n_nodes<span class="token punctuation">]</span> <span class="token operator">=</span> rooms_mks
+    all_nodes<span class="token punctuation">[</span>node_offset<span class="token punctuation">:</span>node_offset <span class="token operator">+</span> n_nodes<span class="token punctuation">]</span> <span class="token operator">=</span> nodes
+</pre><h3 class="mume-header" id="double-generator-call">Double generator call</h3>
+
+<p>Another improvement performed in the context of the model training has to do with the generator&#x2019;s call. More specifically in every minibatch run, the model starts  with training the discriminator network. To do that, random noise is fed into the Generator, so that a floorplan is generated. Afterwards, the Generator network is trained. Then, the Generator performs a second forward execution, even though its weights haven&apos;t been altered. We found that this double generator call per minibatch run is redundant, hance we removed it the second forward run, in order to improve the runtime. Don&#x2019;t forget that the complete training of the model is quite intense, since it involves training and evaluating the model for each house category individually!</p>
+<h2 class="mume-header" id="difficulties-in-reproduction">Difficulties in Reproduction</h2>
+
+<p>A particular diffuculty that we faced during reproduction was in the data loading part. During this stage, the data underwent complex transformations which involve translations, normalizations, and resizings so that nodes, edges, and room masks can be finally created and passed to the model. If augmentation is applied (in the case of the training loader for example), additional transformations are used which rotate and &#x201C;mirror&#x201D; the floorplans. The complexity we came across in this part of the implementation can be justified by the multifaceted nature of the data, in both the preprocessing end and the consuming end (the graph creation).</p>
+<h2 class="mume-header" id="implementation-details">Implementation details</h2>
+
+<h3 class="mume-header" id="data-preprocessing">Data Preprocessing</h3>
+
+<p>The initial dataset, extracted from LIFULL HOME&#x2019;s database, is a collection of floorplans. Each of these consists of two lists: one containing the types of the rooms (living room, kitchen, etc) and another containing the corresponding rooms&apos; &quot;bounding boxes&quot;, which are pairs of the <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>x</mi><mo separator="true">,</mo><mi>y</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(x, y)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">)</span></span></span></span> coordinates of each room&apos;s uppper left and bottom right corners in the floorplans.</p>
+<p>The mapping of room types is shown in the table below:</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Room Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Living Room</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Kitchen</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Bedroom</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Bathroom</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Missing</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Closet</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Balcony</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Corridor</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Dining Room</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Laundry Room</td>
+</tr>
+</tbody>
+</table>
+<p>To make the description clearer, an example of a floorplan from the dataset before any processing is applied could look like this:</p>
+<pre data-role="codeBlock" data-info class="language-"><code>[
+    [2.0, 3.0, 4.0],
+    [
+        array([array([132,   6, 148,  65]),
+        array([110,  68, 208, 130]),
+        array([132,  91, 160, 130]
+    ]
+]
+</code></pre><p>This means that in this particular floorplan, we have three rooms of types 2, 3, 4 (so kitchen, bedroom and bathroom respectively), where the kitchen&apos;s area is defined by the coordinates <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mn>132</mn><mo separator="true">,</mo><mn>6</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(132, 6)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">132</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">6</span><span class="mclose">)</span></span></span></span> and <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mn>148</mn><mo separator="true">,</mo><mn>65</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(148, 65)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">148</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">65</span><span class="mclose">)</span></span></span></span> etc.</p>
+<p>The data go through the following transformations:</p>
+<ol>
+<li>Malformed samples are dropped</li>
+<li>If the data are to be used for training, augmentation is applied; the floorplans are randomly flipped and rotated.</li>
+<li>The floorplans are centered and rescaled (256x256 image becomes 32x32)</li>
+<li>The graph is created (and returned):</li>
+</ol>
+<ul>
+<li>the nodes are the one-hot encoded types of the rooms</li>
+<li>the edges are tuples containing the source room, the destination room, and a value denoting their adjacency; <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> for adjacent (common wall or overlapping) and <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&#x2212;</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">-1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">&#x2212;</span><span class="mord">1</span></span></span></span> for non-adjacent.</li>
+<li>the masks are generated - one for each room. A mask is a 32x32 matrix with <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span>&apos;s marking the area of a room and <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&#x2212;</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">-1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">&#x2212;</span><span class="mord">1</span></span></span></span>&apos;s the rest.</li>
+</ul>
+<p>To illustrate how the data that is fed to the model looks like after the transformations, we provide the following example (corresponding to the example given earlier):</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token comment"># nodes (rooms)</span>
+tensor<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">.</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+        <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">.</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+        <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">.</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token comment"># edges (how the rooms are connected)</span>
+tensor<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">[</span> <span class="token number">0</span><span class="token punctuation">,</span>  <span class="token number">1</span><span class="token punctuation">,</span>  <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+        <span class="token punctuation">[</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span>  <span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+        <span class="token punctuation">[</span> <span class="token number">1</span><span class="token punctuation">,</span>  <span class="token number">1</span><span class="token punctuation">,</span>  <span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token comment"># room masks</span>
+tensor<span class="token punctuation">(</span><span class="token punctuation">[</span>
+    <span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span>  <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+     <span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span>  <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+     <span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span>  <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+     <span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span>  <span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span>  <span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span>  <span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span>  <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+     <span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span>  <span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span>  <span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span>  <span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span>  <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+     <span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span>  <span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span>  <span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span>  <span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span>  <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+     <span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span>  <span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span>  <span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span>  <span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span>  <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+     <span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span>  <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+     <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span>
+     <span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span>  <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+     <span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span>  <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+     <span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span>  <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span>
+<span class="token punctuation">]</span><span class="token punctuation">)</span>
+</pre><p>Notice in the room mask the area filled with &apos;1&apos;s. This area is occupied by the respective room.</p>
+<p>During the batch-collation step, nodes, edges and masks of the batch are stacked vertically and returned as tensors, along with 2 extra tensors to be used as indices, in case multiple GPUs are to be employed.</p>
+<h3 class="mume-header" id="training">Training</h3>
+
+<p>In order to perform the training, the floorplans were divided to groups by their number of rooms.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Group Name</th>
+<th>A</th>
+<th>B</th>
+<th>C</th>
+<th>D</th>
+<th>E</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Number of rooms</td>
+<td>1-3</td>
+<td>4-6</td>
+<td>7-9</td>
+<td>10-12</td>
+<td>13+</td>
+</tr>
+</tbody>
+</table>
+<p>Training was performed individually for each floorplan group. This was in alignmend to their original paper, because training and evaluating the networks with floorplans from the same room number could potentially lead to over-fitting. In other words, it is possible that the Generator would produce (almost) the same image for floorplans with the same number of rooms.</p>
+<p>After loading the training dataset minibatches, the training began with generating an image, given a noise vector for each room of the input graph, sampled from standard normal distribution. Afterwards, the Discriminator was executed twice, once for the real image, and once for the generated one.<br>
+Then, the Discriminator loss is calculated as follows:<br>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>l</mi><mi>o</mi><mi>s</mi><msub><mi>s</mi><mrow><mi>d</mi><mi>i</mi><mi>s</mi><mi>c</mi></mrow></msub><mo>=</mo><mo>&#x2212;</mo><mi>o</mi><mi>u</mi><mi>t</mi><mi>p</mi><mi>u</mi><msub><mi>t</mi><mrow><mi>r</mi><mi>e</mi><mi>a</mi><mi>l</mi></mrow></msub><mo>+</mo><mi>o</mi><mi>u</mi><mi>t</mi><mi>p</mi><mi>u</mi><msub><mi>t</mi><mrow><mi>f</mi><mi>a</mi><mi>k</mi><mi>e</mi></mrow></msub><mo>+</mo><mi>&#x3BB;</mi><mo>&#x2217;</mo><mi>G</mi><mi>P</mi></mrow><annotation encoding="application/x-tex">loss_{disc} = -output_{real} + output_{fake} + \lambda*GP</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8444em;vertical-align:-0.15em;"></span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">os</span><span class="mord"><span class="mord mathnormal">s</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">d</span><span class="mord mathnormal mtight">i</span><span class="mord mathnormal mtight">sc</span></span></span></span></span><span class="vlist-s">&#x200B;</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8095em;vertical-align:-0.1944em;"></span><span class="mord">&#x2212;</span><span class="mord mathnormal">o</span><span class="mord mathnormal">u</span><span class="mord mathnormal">tp</span><span class="mord mathnormal">u</span><span class="mord"><span class="mord mathnormal">t</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">re</span><span class="mord mathnormal mtight">a</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span></span></span></span></span><span class="vlist-s">&#x200B;</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.9012em;vertical-align:-0.2861em;"></span><span class="mord mathnormal">o</span><span class="mord mathnormal">u</span><span class="mord mathnormal">tp</span><span class="mord mathnormal">u</span><span class="mord"><span class="mord mathnormal">t</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.10764em;">f</span><span class="mord mathnormal mtight" style="margin-right:0.03148em;">ak</span><span class="mord mathnormal mtight">e</span></span></span></span></span><span class="vlist-s">&#x200B;</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">&#x3BB;</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">&#x2217;</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">GP</span></span></span></span></span><br>
+where</p>
+<ul>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>o</mi><mi>u</mi><mi>t</mi><mi>p</mi><mi>u</mi><msub><mi>t</mi><mrow><mi>r</mi><mi>e</mi><mi>a</mi><mi>l</mi></mrow></msub></mrow><annotation encoding="application/x-tex">(output_{real}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">o</span><span class="mord mathnormal">u</span><span class="mord mathnormal">tp</span><span class="mord mathnormal">u</span><span class="mord"><span class="mord mathnormal">t</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">re</span><span class="mord mathnormal mtight">a</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span></span></span></span></span><span class="vlist-s">&#x200B;</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>) is the discriminator output with the real image as input</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>o</mi><mi>u</mi><mi>t</mi><mi>p</mi><mi>u</mi><msub><mi>t</mi><mrow><mi>f</mi><mi>a</mi><mi>k</mi><mi>e</mi></mrow></msub></mrow><annotation encoding="application/x-tex">(output_{fake}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0361em;vertical-align:-0.2861em;"></span><span class="mopen">(</span><span class="mord mathnormal">o</span><span class="mord mathnormal">u</span><span class="mord mathnormal">tp</span><span class="mord mathnormal">u</span><span class="mord"><span class="mord mathnormal">t</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.10764em;">f</span><span class="mord mathnormal mtight" style="margin-right:0.03148em;">ak</span><span class="mord mathnormal mtight">e</span></span></span></span></span><span class="vlist-s">&#x200B;</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span>) is the discriminator output with the real image as input</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>G</mi><mi>P</mi></mrow><annotation encoding="application/x-tex">(GP</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.13889em;">GP</span></span></span></span>) is the gradient penalty, used to clip the gradients to values close to one, and thus provide stability in the calculation</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>&#x3BB;</mi></mrow><annotation encoding="application/x-tex">(\lambda</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">&#x3BB;</span></span></span></span>) is the penalty coefficient, used to weight the gradient penalty. In our case <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>&#x3BB;</mi><mo>=</mo><mn>10</mn></mrow><annotation encoding="application/x-tex">(\lambda = 10</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">&#x3BB;</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">10</span></span></span></span>).</li>
+</ul>
+<p>The Discriminator network is trained by Adam optimizer, with a learning rate of <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mn>0.0001</mn></mrow><annotation encoding="application/x-tex">(0.0001</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">0.0001</span></span></span></span>).</p>
+<p>Next, the Generator is trained, based on the updated prediction of the Discriminator above the generated image.<br>
+The Generator loss is simply:<br>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>l</mi><mi>o</mi><mi>s</mi><msub><mi>s</mi><mrow><mi>g</mi><mi>e</mi><mi>n</mi></mrow></msub><mo>=</mo><mi>o</mi><mi>u</mi><mi>t</mi><mi>p</mi><mi>u</mi><msub><mi>t</mi><mrow><mi>f</mi><mi>a</mi><mi>k</mi><msup><mi>e</mi><mo mathvariant="normal" lspace="0em" rspace="0em">&#x2032;</mo></msup></mrow></msub></mrow><annotation encoding="application/x-tex">loss_{gen} = output_{fake&apos;}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9805em;vertical-align:-0.2861em;"></span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">os</span><span class="mord"><span class="mord mathnormal">s</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">g</span><span class="mord mathnormal mtight">e</span><span class="mord mathnormal mtight">n</span></span></span></span></span><span class="vlist-s">&#x200B;</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.9012em;vertical-align:-0.2861em;"></span><span class="mord mathnormal">o</span><span class="mord mathnormal">u</span><span class="mord mathnormal">tp</span><span class="mord mathnormal">u</span><span class="mord"><span class="mord mathnormal">t</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.10764em;">f</span><span class="mord mathnormal mtight" style="margin-right:0.03148em;">ak</span><span class="mord mtight"><span class="mord mathnormal mtight">e</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6828em;"><span style="top:-2.786em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mtight">&#x2032;</span></span></span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">&#x200B;</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span></span><br>
+where <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>o</mi><mi>u</mi><mi>t</mi><mi>p</mi><mi>u</mi><msub><mi>t</mi><mrow><mi>f</mi><mi>a</mi><mi>k</mi><msup><mi>e</mi><mo mathvariant="normal" lspace="0em" rspace="0em">&#x2032;</mo></msup></mrow></msub></mrow><annotation encoding="application/x-tex">(output_{fake&apos;}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0361em;vertical-align:-0.2861em;"></span><span class="mopen">(</span><span class="mord mathnormal">o</span><span class="mord mathnormal">u</span><span class="mord mathnormal">tp</span><span class="mord mathnormal">u</span><span class="mord"><span class="mord mathnormal">t</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.10764em;">f</span><span class="mord mathnormal mtight" style="margin-right:0.03148em;">ak</span><span class="mord mtight"><span class="mord mathnormal mtight">e</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6828em;"><span style="top:-2.786em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mtight">&#x2032;</span></span></span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">&#x200B;</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span>) is the updated prediction of the Discriminator after the training step.</p>
+<p>The Generator is again trained with Adam optimizer, with a learning rate of <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mn>0.0001</mn></mrow><annotation encoding="application/x-tex">(0.0001</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">0.0001</span></span></span></span>).</p>
+<p>The training procedure goes on for 50 epochs, while it is parallelizeable. In our case, we ran the training on a Google Cloud server with 4 GPUs.</p>
+<p><img src="./assets/genloss.jpeg" alt="Generator Loss"></p>
+<p><img src="./assets/disloss.jpeg" alt="Discriminator Loss"></p>
+<h2 class="mume-header" id="evaluation">Evaluation</h2>
+
+<p>In the absence of a considerable number of experts in order to evaluate the compatibility and realism scores this reproduction focuses on the calculation of the <em>diversity</em> metric. According to original paper diveristy is measured by using the FID score with the rasterized layout images.</p>
+<p>As mentioned above, the methodology followed by Nuata et al. [1] was to evaluate the model on the not used set during training. For that reason 5 diversity scores were obtained. However, here only the one referring to the subset <code>10-12</code> will be provided, considering that training the model with such a large dataset is computationally very expensive even though a parallelism is used in our approach which made the whole process much faster as indicated on the section <em>Code Improvements</em>.</p>
+<p>Furthermore, due to computational cost it is worth noting that the number of iterations used in our case was 200000, while the demo provided by the author of the paper refers to 500000. A higher number would provide better scores, which leads us to expect slightly worse results than the original paper.</p>
+<p>On a more practical perspective, two folders were created, one containing real data and another one containing generated data based on the trained model. The two files created are passed to <a href="https://github.com/mseitzer/pytorch-fid">pytorch-fid</a> [2] which calculated the final score. In order to avoid any lucky generations, instead of having the same amount of real and generated data, the number of the second was tenfold the first. In such a way 10 generated floorplans would be compared to each ground truth, following the same approach as the original paper for a fairer comparison.</p>
+<p>Lastly, some of the generated and real floorplans are presented in order to comprehend the capabilities of this algorithm.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Full re-implementation with 200k iterations</th>
+<th style="text-align:center">Original paper code using pre-trained data with 500k iterations</th>
+<th style="text-align:center">Original paper</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">17.68</td>
+<td style="text-align:center">11.8</td>
+<td style="text-align:center">11.6</td>
+</tr>
+</tbody>
+</table>
+<p>Examples of fake (generated) floorplans:<br>
+<img src="./assets/fakeimgconcat.jpeg" alt="Fake (generated) floorplans"></p>
+<p>Examples of real floorplans:<br>
+<img src="./assets/realimgconcat.jpeg" alt="Real floorplans"></p>
+<h2 class="mume-header" id="value-of-reproduction">Value of Reproduction</h2>
+
+<p>While papers&apos; results were quite difficult to reproduce a few years back, the scientific community&apos;s standards have risen. Nowadays, authors tend to include crucial details regarding their work, such as hyperparameters, software environments, training equipment, datasets and even the actual code.</p>
+<p>That unlocked university projects such as this one, where we managed to reproduce results of a paper, where we completely rewrote the software and using the same dataset.</p>
+<p>After completing this project we:</p>
+<ul>
+<li>familiarized ourselves with the concepts of Graph Neural Networks and how to utilize convolution on them</li>
+<li>got coding experience with PyTorch</li>
+<li>learned to evaluate a paper, understand implementation nuances and explanations of unfamiliar concepts</li>
+</ul>
+<p>However, we also appreciated the importance of paper reproduction. Someone that undertakes such an endeavour contributes in research in a unique manner. The researcher has the opportunity to:</p>
+<ul>
+<li>confirm/disprove the provided results, which might have been handpicked, or just an outlier</li>
+<li>refine and optimize the software</li>
+<li>produce new ideas that can improve the results</li>
+<li>perform reviews and provide meaningful comments that the original author can use</li>
+</ul>
+<h2 class="mume-header" id="appendix">Appendix</h2>
+
+<p>Our implementation can be found <a href="https://github.com/athatheo/House-GANs-Reproduction">here</a>.</p>
+<p>For this reproduction, we divided the work into 4 tasks, and each member of the group was assigned to one of them. Specifically:</p>
+<ul>
+<li>Athanasios created the models</li>
+<li>Konstantinos implemented the training loop</li>
+<li>Nikolaos worked on the data preprocessing/loading part</li>
+<li>Markos undertook the evaluation part</li>
+</ul>
+<p>This was a fun project for us to work on and we learned a lot.</p>
+<h2 class="mume-header" id="references">References</h2>
+
+<p>[1] N. Nauata, K. Chang, C. Cheng, G. Mori, and Y. Furukawa, &#x201C;House-gan: Relational generative adversarial<br>
+networks for graph-constrained house layout generation,&#x201D; CoRR, vol. abs/2003.06988, 2020, Available: <a href="https://arxiv.org/abs/2003.06988">https://arxiv.org/abs/2003.06988</a></p>
+<p>[2] M. Seitzer, &quot;pytorch-fid: FID Score for PyTorch.&quot; <a href="https://github.com/mseitzer/pytorch-fid">https://github.com/mseitzer/pytorch-fid</a>, 2020.</p>
+
+      </div>
+      
+      
+    
+    
+    
+    
+    
+    
+    
+    
+  
+    </body></html>

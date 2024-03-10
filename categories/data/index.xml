@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>data on Nikos Gavalas</title>
+    <link>https://nikosg.com/categories/data/</link>
+    <description>Recent content in data on Nikos Gavalas</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 12 Mar 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://nikosg.com/categories/data/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Volume Rendering for 3D Data Visualization</title>
+      <link>https://nikosg.com/volume-rendering-for-3d-data-visualization/</link>
+      <pubDate>Sat, 12 Mar 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://nikosg.com/volume-rendering-for-3d-data-visualization/</guid>
+      <description>Introduction Volume rendering is a collection of methods to visualize volumes, which we often encounter in scientific, engineering, and biomedical domains.
+Volume datasets are essentially sampled 3D scalar fields: \( f[m, n, k]: \mathbb{N^3} \rightarrow \mathbb{N} \). We refer to the pairs of 3D coordinates and their corresponding intensity values as Voxels (the 3D equivalent of pixels).
+Volume rendering can be divided in three main categories:
+2D visualization of slices of the volume, known as MPR (Multi-Planar Reconstruction) Indirect 3D visualization - Isosurfaces Direct 3D visualization known as DVR (Direct Volume Rendering) Let&amp;rsquo;s examine each category separately.</description>
+    </item>
+    
+  </channel>
+</rss>

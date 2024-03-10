@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <title>DataVis</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/slider.css" rel="stylesheet" />
+    <link href="css/custom.css" rel="stylesheet" />
+  </head>
+  <body>
+    <nav class="navbar navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand mb-0 h1" href="#">World Population</a>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="card">
+            <div class="card-header">
+              Population Growth Rate vs GDP per capita (in USD) for all
+              countries per year
+            </div>
+            <div id="scatterArea"></div>
+            <div class="card-body">
+              <p class="card-text">
+                Area and colour are proportional to Population and Percentage of
+                Working-Age Population (15-64) respectively. Move the slider
+                below to visualise the change over the years. Hover over the
+                dots with the mouse for effect.
+              </p>
+            </div>
+          </div>
+
+          <div class="row align-items-center">
+            <div class="col-11">
+              <input
+                class="form-range"
+                type="range"
+                name="timeSlider"
+                id="timeSlider"
+                min="1960"
+                max="2020"
+                step="1"
+                value="2020"
+                oninput="selectedTime.value=timeSlider.value"
+              />
+            </div>
+            <div class="col-1">
+              <b>
+                <output name="selectedTime" id="selectedTime">2020</output>
+              </b>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6">
+          <div class="card">
+            <div class="card-header">
+              Demographic Distribution for all countries per year
+            </div>
+            <div id="mapArea"></div>
+            <div class="card-body">
+              <p class="card-text">
+                The colour of each country indicates the percentage of its
+                working-age population (15-64). The darker the tone, the lower
+                the percentage. Black colour denotes missing data. Hover over
+                the countries with the mouse for effect.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="./js/bootstrap.bundle.min.js"></script>
+    <script src="./js/d3.v7.min.js"></script>
+
+    <script src="./js/data.js"></script>
+    <script src="./js/vis.js"></script>
+  </body>
+</html>
