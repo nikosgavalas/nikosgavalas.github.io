@@ -14,8 +14,7 @@ Personal projects:
 - [Implementation of selected anomaly detection algorithms in Python](https://github.com/nikosgavalas/anomaly-detection-python) (**Python**)
 - [Implementation of selected anomaly detection algorithms in Scala](https://github.com/nikosgavalas/anomaly-detection-scala) (**Scala**)
 
-<details>
-<summary>TU Delft Coursework</summary>
+TU Delft Coursework
 
 - [Thesis - Key-value stores with Incremental Snapshots for Dataflow Systems](https://github.com/NikosGavalas/tud-thesis) My thesis project (**Python**)
 - [Data Visualization](https://github.com/nikosgavalas/tud-datavis) Information Visualization (**JavaScript/D3.js**) - Volume Visualization (**C++/OpenGL**)
@@ -26,16 +25,13 @@ Personal projects:
 - [Release Engineering for Machine Learning Applications](https://github.com/athatheo/remla-baseline-project) ML app with automated tests, deployment, monitoring (**Python, Kubernetes**)
 - [Web-scale Data Management](https://github.com/tud-wdm-group-3/ShoppingCart) Scalable web app with strong data consistency (**Java/Spring, Kubernetes**)
 - [Supercomputing for Big Data](https://github.com/nikosgavalas/tud-sbd/tree/master) Big-Data analytics (**Spark, Kafka, Scala, AWS EMR**)
-</details>
 
-<details>
-<summary>ACG Coursework</summary>
+ACG Coursework
 
 - [Quantitative Finance project](https://github.com/nikosgavalas/acg-quantfin) Comparison between statistical and Deep Learning methods (LSTMs) for time-series analysis (**Python/Keras, statsmodels**)
-</details>
 
-<details>
-<summary>NTUA Coursework</summary>
+
+NTUA Coursework
 
 - [Thesis - Large-Scale Real-Time Anomaly Detection](https://github.com/nikosgavalas/ntua-thesis) My [thesis](https://dspace.lib.ntua.gr/xmlui/bitstream/handle/123456789/49060/thesis_gavalas.pdf) project (**Python, Scala, Ansible**)
 - [Algorithms and Complexity](https://github.com/nikosgavalas/ntua-algo) Course assignments (**C++**)
@@ -47,8 +43,6 @@ Personal projects:
 - [Operating Systems](https://github.com/NikosGavalas/ntua-os) Course assignments (**C**)
 </details>
 
-<details>
-<summary>Blogposts</summary>
+Blogposts
 
 - [Anomaly Detection on Data Streams in a few lines of Bash](./anomaly-detection-on-streams-in-bash.md) 2019-11-02
-</details>
