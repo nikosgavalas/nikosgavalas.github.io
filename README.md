@@ -1,3 +1,6 @@
+[Linkedin](https://www.linkedin.com/in/nikosgavalas/)
+[Github](https://github.com/nikosgavalas)
+
 Showcase of some of the code and posts I 've written in the past:
 
 Personal projects:
@@ -42,7 +45,3 @@ NTUA Coursework
 - [Programming Languages I](https://github.com/nikosgavalas/ntua-proglang) Course assignments (**C, Java, SML/NJ, Prolog**)
 - [Operating Systems](https://github.com/NikosGavalas/ntua-os) Course assignments (**C**)
 </details>
-
-Blogposts
-
-- [Anomaly Detection on Data Streams in a few lines of Bash](./anomaly-detection-on-streams-in-bash.md) 2019-11-02
