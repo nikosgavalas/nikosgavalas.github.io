@@ -1,4 +1,4 @@
-Showcase of some of the code and posts I 've written in the past (click categories to expand):
+Showcase of some of the code and posts I 've written in the past:
 
 Personal projects:
 
