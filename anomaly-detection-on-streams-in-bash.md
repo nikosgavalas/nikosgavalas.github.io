@@ -17,52 +17,40 @@ I thought it would be fun to implement it in one line of Bash. It turned out tha
 
 Without further ado, let's begin with some theory. We start by assuming that our data are following the Gaussian distribution.
 
-Therefore, given an instance $` x \sim \mathcal{N}(\mu, \Sigma), x \in \mathbb{R}^d, x=[x_1, x_2, \ldots, x_d]^T `$, its probability density function is:
+Therefore, given an instance \\( x \sim \mathcal{N}(\mu, \Sigma), x \in \mathbb{R}^d, x=[x_1, x_2, \ldots, x_d]^T \\), its probability density function is:
 
-```math
-p(x; \mu, \Sigma)= \frac{1}{(2\pi)^{d/2}|\Sigma|^{\frac{1}{2} }}\exp\bigg(-\frac{1}{2}(x-\mu)^T\Sigma^{-1}(x-\mu)\bigg)
-```
+\\[  p(x; \mu, \Sigma)= \frac{1}{(2\pi)^{d/2}|\Sigma|^{\frac{1}{2}}}\exp\bigg(-\frac{1}{2}(x-\mu)^T\Sigma^{-1}(x-\mu)\bigg) \\]
 
-where $`\mu \in \mathbb{R}^d`$ is the mean and $` \Sigma \in \mathbb{R}^{d \times d} `$ is the
+where \\(\mu \in \mathbb{R}^d\\) is the mean and \\( \Sigma \in \mathbb{R}^{d \times d} \\) is the
 covariance matrix.
 
-Now assuming that variables $` x_i \sim \mathcal{N}(\mu_i, \sigma_i^{2}) `$ are all independent, we get:
+Now assuming that variables \\( x_i \sim \mathcal{N}(\mu_i, \sigma_i^{2}) \\) are all independent, we get:
 
-```math
-p(x) = p(x_1, x_2, \ldots, x_d) = p(x_1; \mu_1, \sigma_1^2)p(x_2; \mu_2, \sigma_2^2)\ldots p(x_d; \mu_d,  \sigma_d^2) = \prod_{j=1}^{d} p(x_j; \mu_j, \sigma_j^2)
-```
-
+\\[ p(x) = p(x_1, x_2, \ldots, x_d) = p(x_1; \mu_1, \sigma_1^2)p(x_2; \mu_2, \sigma_2^2)\ldots p(x_d; \mu_d,  \sigma_d^2) = \prod\_{j=1}^{d} p(x_j; \mu_j, \sigma_j^2) \\]
 where:
 
-```math
-p(x; \mu, \sigma^2)=\frac{1}{\sqrt{2\pi}\sigma} \exp\Big(- \frac{(x-\mu)^2}{2\sigma^2}\Big)
-```
+\\[ p(x; \mu, \sigma^2)=\frac{1}{\sqrt{2\pi}\sigma} \exp\Big(- \frac{(x-\mu)^2}{2\sigma^2}\Big) \\]
 
-To train the model (which basically consists of the values $` \mu_i, \sigma_i^2, \forall i \in [1, \ldots, d] `$), one needs to calculate the following
+To train the model (which basically consists of the values \\( \mu_i, \sigma_i^2, \forall i \in [1, \ldots, d] \\)), one needs to calculate the following
 parameters (MLE):
 
-- $` \mu_i = \frac{1}{n} \sum_{j=1}^{n}{x_i^{(j)} } `$, where $` n `$ is the number of training examples (the size of the training dataset),
-- $` \sigma_i^2 = \frac{1}{n}{\sum_{j=1}^{n}{(x_i^{(j)} - \mu_i)^2} } `$
+- \\( \mu_i = \frac{1}{n} \sum\_{j=1}^{n}{x_i^{(j)}} \\), where \\( n \\) is the number of training examples (the size of the training dataset),
+- \\( \sigma_i^2 = \frac{1}{n}{\sum\_{j=1}^{n}{(x_i^{(j)} - \mu_i)^2}} \\)
 
-Then, in the evaluation phase, given a new example $` x `$, we compute:
+Then, in the evaluation phase, given a new example \\( x \\), we compute:
 
-```math
-p(x) = \prod_{i=1}^{d}{ \frac{1}{\sqrt{2\pi}\sigma_i} \exp\Big(- \frac{(x_i-\mu_i)^2}{2\sigma_i^2}\Big) }
-```
-
-and we flag $`x`$ as anomaly if the value of $` p(x) `$ is smaller than a threshold value $`\epsilon`$ (hyperparameter).
+\\[ p(x) = \prod\_{i=1}^{d}{ \frac{1}{\sqrt{2\pi}\sigma_i} \exp\Big(- \frac{(x_i-\mu_i)^2}{2\sigma_i^2}\Big) } \\]
+and we flag \\(x\\) as anomaly if the value of \\( p(x) \\) is smaller than a threshold value \\(\epsilon\\) (hyperparameter).
 
 Now here is the **imporant part**. How will we compute these values incrementally?
 
-By having the tuples $` T_i = \big( \sum_{j=1}^{n}{x_i^{(j)} }, ~ \sum_{j=1}^{n}{ {(x_i^{(j)})}^2}, ~ n \big) `$, where $` n `$ is the count of the instances, 
+By having the tuples \\( T_i = \big( \sum\_{j=1}^{n}{x_i^{(j)}}, ~ \sum\_{j=1}^{n}{{(x_i^{(j)})}^2}, ~ n \big) \\), where \\( n \\) is the count of the instances, 
 available at any point of the computation!
-This way, when training or evaluating, in batch or on stream, we have access to all parameters of the model $` \mu_i `$ and
-$` \sigma_i^2 `$ at any time by calculating:
+This way, when training or evaluating, in batch or on stream, we have access to all parameters of the model \\( \mu_i \\) and
+\\( \sigma_i^2 \\) at any time by calculating:
 
-```math
-\mu_i = \frac{\sum_{j=1}^{n}{x_i^{(j)} }}{n} = \frac{T_i[0]}{T_i[2]}, ~~~~~
-\sigma_i^2 = \frac{\sum_{j=1}^{n}{ {(x_i^{(j)})}^2} }{n} - \mu_i^2 = \frac{T_i[1]}{T_i[2]} - (\frac{T_i[0]}{T_i[2]})^2
-```
+\\[ \mu_i = \frac{\sum\_{j=1}^{n}{x_i^{(j)}}}{n} = \frac{T_i[0]}{T_i[2]}, ~~~~~
+\sigma_i^2 = \frac{\sum\_{j=1}^{n}{{(x_i^{(j)})}^2}}{n} - \mu_i^2 = \frac{T_i[1]}{T_i[2]} - (\frac{T_i[0]}{T_i[2]})^2 \\]
 
 So let's go ahead and fetch the dataset, then implement the algorithm with awk.
 
@@ -109,7 +97,7 @@ Here we will first update the model, by updating the `SUMS` and `SQUARES` arrays
 however you like), we update the respective value using the current row that awk is parsing.
 
 After that, we use the current row and the model (the arrays), to calculate an anomaly score, according to the formula
-we discussed earlier (see $` p(x) `$). To get an accurate value of $` \pi `$ for the calculations, I am using `atan2(0, -1)`.
+we discussed earlier (see \\( p(x) \\)). To get an accurate value of \\( \pi \\) for the calculations, I am using `atan2(0, -1)`.
 
 ```bash
 {
@@ -219,9 +207,9 @@ So there you go, one pass on the data with a few lines of awk are enough to hand
 ### Sidenote: Big Data Frameworks
 
 This algorithm can be implemented in any Big Data framework (Apache Spark, Hadoop, Flink, whatever...) in a very straightforward way, with the functional
-operators `map` and `reduce`. Assume that our training data are $` n `$ d-dimensional
-vectors $` x^{(j)} = [x_1^{(j)}, x_2^{(j)}, \ldots, x_d^{(j)}]^T, j \in [1, \ldots, n] `$. 
-Then the values of vectors $` \mu `$ and $` \sigma^2 `$ can be computed by:
+operators `map` and `reduce`. Assume that our training data are \\( n \\) d-dimensional
+vectors \\( x^{(j)} = [x_1^{(j)}, x_2^{(j)}, \ldots, x_d^{(j)}]^T, j \in [1, \ldots, n] \\). 
+Then the values of vectors \\( \mu \\) and \\( \sigma^2 \\) can be computed by:
 
 ```scala
 // Scala
