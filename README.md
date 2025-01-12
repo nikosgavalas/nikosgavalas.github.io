@@ -1,5 +1,3 @@
-Testing
-
 Showcase of some of the code and posts I 've written in the past (click categories to expand):
 
 Personal projects:
@@ -52,5 +50,5 @@ Personal projects:
 <details>
 <summary>Blogposts</summary>
 
-- [Anomaly Detection on Data Streams in a few lines of Bash](https://github.com/nikosgavalas/ntua-thesis) 2019-11-02
+- [Anomaly Detection on Data Streams in a few lines of Bash](./anomaly-detection-on-streams-in-bash.md) 2019-11-02
 </details>
