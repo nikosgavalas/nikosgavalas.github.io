@@ -50,5 +50,5 @@ Personal projects:
 <details>
 <summary>Blogposts</summary>
 
-- [Anomaly Detection on Data Streams in a few lines of Bash](./anomaly-detection-on-streams-in-bash.md) 2019-11-02
+- [Anomaly Detection on Data Streams in a few lines of Bash](./posts/anomaly-detection-on-streams-in-bash.md) 2019-11-02
 </details>

@@ -1,3 +1,8 @@
+---
+title: Anomaly Detection on Data Streams in a few lines of Bash
+filename: anomaly-detection-on-streams-in-bash.md
+--- 
+
 Let's assume that we have a stream of data points, and we want to detect outliers i.e. points that deviate from the norm. This is interesting because usually such data are linked to faulty or malicious behavior.
 
 The fact that our data points are available as a stream means that we cannot "look" at them more than once. Therefore we need an algorithm with complexity linear to the number of points of the stream.
