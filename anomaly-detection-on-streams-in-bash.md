@@ -1,8 +1,3 @@
----
-title: "Anomaly Detection on Data Streams in a few lines of Bash"
-date: "2019-11-02"
----
-
 Let's assume that we have a stream of data points, and we want to detect outliers i.e. points that deviate from the norm. This is interesting because usually such data are linked to faulty or malicious behavior.
 
 The fact that our data points are available as a stream means that we cannot "look" at them more than once. Therefore we need an algorithm with complexity linear to the number of points of the stream.
@@ -19,17 +14,24 @@ Without further ado, let's begin with some theory. We start by assuming that our
 
 Therefore, given an instance $` x \sim \mathcal{N}(\mu, \Sigma), x \in \mathbb{R}^d, x=[x_1, x_2, \ldots, x_d]^T `$, its probability density function is:
 
-```math  p(x; \mu, \Sigma)= \frac{1}{(2\pi)^{d/2}|\Sigma|^{\frac{1}{2}}}\exp\bigg(-\frac{1}{2}(x-\mu)^T\Sigma^{-1}(x-\mu)\bigg) ```
+```math
+p(x; \mu, \Sigma)= \frac{1}{(2\pi)^{d/2}|\Sigma|^{\frac{1}{2}}}\exp\bigg(-\frac{1}{2}(x-\mu)^T\Sigma^{-1}(x-\mu)\bigg)
+```
 
 where $`\mu \in \mathbb{R}^d`$ is the mean and $` \Sigma \in \mathbb{R}^{d \times d} `$ is the
 covariance matrix.
 
 Now assuming that variables $` x_i \sim \mathcal{N}(\mu_i, \sigma_i^{2}) `$ are all independent, we get:
 
-```math p(x) = p(x_1, x_2, \ldots, x_d) = p(x_1; \mu_1, \sigma_1^2)p(x_2; \mu_2, \sigma_2^2)\ldots p(x_d; \mu_d,  \sigma_d^2) = \prod\_{j=1}^{d} p(x_j; \mu_j, \sigma_j^2) ```
+```math
+p(x) = p(x_1, x_2, \ldots, x_d) = p(x_1; \mu_1, \sigma_1^2)p(x_2; \mu_2, \sigma_2^2)\ldots p(x_d; \mu_d,  \sigma_d^2) = \prod\_{j=1}^{d} p(x_j; \mu_j, \sigma_j^2)
+```
+
 where:
 
-```math p(x; \mu, \sigma^2)=\frac{1}{\sqrt{2\pi}\sigma} \exp\Big(- \frac{(x-\mu)^2}{2\sigma^2}\Big) ```
+```math
+p(x; \mu, \sigma^2)=\frac{1}{\sqrt{2\pi}\sigma} \exp\Big(- \frac{(x-\mu)^2}{2\sigma^2}\Big)
+```
 
 To train the model (which basically consists of the values $` \mu_i, \sigma_i^2, \forall i \in [1, \ldots, d] `$), one needs to calculate the following
 parameters (MLE):
@@ -39,7 +41,10 @@ parameters (MLE):
 
 Then, in the evaluation phase, given a new example $` x `$, we compute:
 
-```math p(x) = \prod\_{i=1}^{d}{ \frac{1}{\sqrt{2\pi}\sigma_i} \exp\Big(- \frac{(x_i-\mu_i)^2}{2\sigma_i^2}\Big) } ```
+```math
+p(x) = \prod\_{i=1}^{d}{ \frac{1}{\sqrt{2\pi}\sigma_i} \exp\Big(- \frac{(x_i-\mu_i)^2}{2\sigma_i^2}\Big) }
+```
+
 and we flag $`x`$ as anomaly if the value of $` p(x) `$ is smaller than a threshold value $`\epsilon`$ (hyperparameter).
 
 Now here is the **imporant part**. How will we compute these values incrementally?
@@ -49,8 +54,10 @@ available at any point of the computation!
 This way, when training or evaluating, in batch or on stream, we have access to all parameters of the model $` \mu_i `$ and
 $` \sigma_i^2 `$ at any time by calculating:
 
-```math \mu_i = \frac{\sum\_{j=1}^{n}{x_i^{(j)}}}{n} = \frac{T_i[0]}{T_i[2]}, ~~~~~
-\sigma_i^2 = \frac{\sum\_{j=1}^{n}{{(x_i^{(j)})}^2}}{n} - \mu_i^2 = \frac{T_i[1]}{T_i[2]} - (\frac{T_i[0]}{T_i[2]})^2 ```
+```math
+\mu_i = \frac{\sum\_{j=1}^{n}{x_i^{(j)}}}{n} = \frac{T_i[0]}{T_i[2]}, ~~~~~
+\sigma_i^2 = \frac{\sum\_{j=1}^{n}{{(x_i^{(j)})}^2}}{n} - \mu_i^2 = \frac{T_i[1]}{T_i[2]} - (\frac{T_i[0]}{T_i[2]})^2
+```
 
 So let's go ahead and fetch the dataset, then implement the algorithm with awk.
 
