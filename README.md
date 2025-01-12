@@ -44,4 +44,3 @@ NTUA Coursework
 - [Distributed Systems](https://github.com/nikosgavalas/ntua-distrib) Distributed group messaging application (**Python**)
 - [Programming Languages I](https://github.com/nikosgavalas/ntua-proglang) Course assignments (**C, Java, SML/NJ, Prolog**)
 - [Operating Systems](https://github.com/NikosGavalas/ntua-os) Course assignments (**C**)
-</details>
