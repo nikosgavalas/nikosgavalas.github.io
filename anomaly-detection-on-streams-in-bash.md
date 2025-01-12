@@ -24,7 +24,7 @@ covariance matrix.
 Now assuming that variables $` x_i \sim \mathcal{N}(\mu_i, \sigma_i^{2}) `$ are all independent, we get:
 
 ```math
-p(x) = p(x_1, x_2, \ldots, x_d) = p(x_1; \mu_1, \sigma_1^2)p(x_2; \mu_2, \sigma_2^2)\ldots p(x_d; \mu_d,  \sigma_d^2) = \prod\_{j=1}^{d} p(x_j; \mu_j, \sigma_j^2)
+p(x) = p(x_1, x_2, \ldots, x_d) = p(x_1; \mu_1, \sigma_1^2)p(x_2; \mu_2, \sigma_2^2)\ldots p(x_d; \mu_d,  \sigma_d^2) = \prod_{j=1}^{d} p(x_j; \mu_j, \sigma_j^2)
 ```
 
 where:
@@ -36,27 +36,27 @@ p(x; \mu, \sigma^2)=\frac{1}{\sqrt{2\pi}\sigma} \exp\Big(- \frac{(x-\mu)^2}{2\si
 To train the model (which basically consists of the values $` \mu_i, \sigma_i^2, \forall i \in [1, \ldots, d] `$), one needs to calculate the following
 parameters (MLE):
 
-- $` \mu_i = \frac{1}{n} \sum\_{j=1}^{n}{x_i^{(j)}} `$, where $` n `$ is the number of training examples (the size of the training dataset),
-- $` \sigma_i^2 = \frac{1}{n}{\sum\_{j=1}^{n}{(x_i^{(j)} - \mu_i)^2}} `$
+- $` \mu_i = \frac{1}{n} \sum_{j=1}^{n}{x_i^{(j)}} `$, where $` n `$ is the number of training examples (the size of the training dataset),
+- $` \sigma_i^2 = \frac{1}{n}{\sum_{j=1}^{n}{(x_i^{(j)} - \mu_i)^2}} `$
 
 Then, in the evaluation phase, given a new example $` x `$, we compute:
 
 ```math
-p(x) = \prod\_{i=1}^{d}{ \frac{1}{\sqrt{2\pi}\sigma_i} \exp\Big(- \frac{(x_i-\mu_i)^2}{2\sigma_i^2}\Big) }
+p(x) = \prod_{i=1}^{d}{ \frac{1}{\sqrt{2\pi}\sigma_i} \exp\Big(- \frac{(x_i-\mu_i)^2}{2\sigma_i^2}\Big) }
 ```
 
 and we flag $`x`$ as anomaly if the value of $` p(x) `$ is smaller than a threshold value $`\epsilon`$ (hyperparameter).
 
 Now here is the **imporant part**. How will we compute these values incrementally?
 
-By having the tuples $` T_i = \big( \sum\_{j=1}^{n}{x_i^{(j)}}, ~ \sum\_{j=1}^{n}{{(x_i^{(j)})}^2}, ~ n \big) `$, where $` n `$ is the count of the instances, 
+By having the tuples $` T_i = \big( \sum_{j=1}^{n}{x_i^{(j)}}, ~ \sum_{j=1}^{n}{{(x_i^{(j)})}^2}, ~ n \big) `$, where $` n `$ is the count of the instances, 
 available at any point of the computation!
 This way, when training or evaluating, in batch or on stream, we have access to all parameters of the model $` \mu_i `$ and
 $` \sigma_i^2 `$ at any time by calculating:
 
 ```math
-\mu_i = \frac{\sum\_{j=1}^{n}{x_i^{(j)}}}{n} = \frac{T_i[0]}{T_i[2]}, ~~~~~
-\sigma_i^2 = \frac{\sum\_{j=1}^{n}{{(x_i^{(j)})}^2}}{n} - \mu_i^2 = \frac{T_i[1]}{T_i[2]} - (\frac{T_i[0]}{T_i[2]})^2
+\mu_i = \frac{\sum_{j=1}^{n}{x_i^{(j)}}}{n} = \frac{T_i[0]}{T_i[2]}, ~~~~~
+\sigma_i^2 = \frac{\sum_{j=1}^{n}{{(x_i^{(j)})}^2}}{n} - \mu_i^2 = \frac{T_i[1]}{T_i[2]} - (\frac{T_i[0]}{T_i[2]})^2
 ```
 
 So let's go ahead and fetch the dataset, then implement the algorithm with awk.
