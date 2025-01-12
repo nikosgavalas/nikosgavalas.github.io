@@ -1,8 +1,5 @@
 Testing
 
-[test](./world-population/index.html)
-
-
 Showcase of some of the code and posts I 've written in the past (click categories to expand):
 
 Personal projects:
