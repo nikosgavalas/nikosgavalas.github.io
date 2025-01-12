@@ -15,7 +15,7 @@ Without further ado, let's begin with some theory. We start by assuming that our
 Therefore, given an instance $` x \sim \mathcal{N}(\mu, \Sigma), x \in \mathbb{R}^d, x=[x_1, x_2, \ldots, x_d]^T `$, its probability density function is:
 
 ```math
-p(x; \mu, \Sigma)= \frac{1}{(2\pi)^{d/2}|\Sigma|^{\frac{1}{2}}}\exp\bigg(-\frac{1}{2}(x-\mu)^T\Sigma^{-1}(x-\mu)\bigg)
+p(x; \mu, \Sigma)= \frac{1}{(2\pi)^{d/2}|\Sigma|^{\frac{1}{2} }}\exp\bigg(-\frac{1}{2}(x-\mu)^T\Sigma^{-1}(x-\mu)\bigg)
 ```
 
 where $`\mu \in \mathbb{R}^d`$ is the mean and $` \Sigma \in \mathbb{R}^{d \times d} `$ is the
@@ -36,8 +36,8 @@ p(x; \mu, \sigma^2)=\frac{1}{\sqrt{2\pi}\sigma} \exp\Big(- \frac{(x-\mu)^2}{2\si
 To train the model (which basically consists of the values $` \mu_i, \sigma_i^2, \forall i \in [1, \ldots, d] `$), one needs to calculate the following
 parameters (MLE):
 
-- $` \mu_i = \frac{1}{n} \sum_{j=1}^{n}{x_i^{(j)}} `$, where $` n `$ is the number of training examples (the size of the training dataset),
-- $` \sigma_i^2 = \frac{1}{n}{\sum_{j=1}^{n}{(x_i^{(j)} - \mu_i)^2}} `$
+- $` \mu_i = \frac{1}{n} \sum_{j=1}^{n}{x_i^{(j)} } `$, where $` n `$ is the number of training examples (the size of the training dataset),
+- $` \sigma_i^2 = \frac{1}{n}{\sum_{j=1}^{n}{(x_i^{(j)} - \mu_i)^2} } `$
 
 Then, in the evaluation phase, given a new example $` x `$, we compute:
 
@@ -49,14 +49,14 @@ and we flag $`x`$ as anomaly if the value of $` p(x) `$ is smaller than a thresh
 
 Now here is the **imporant part**. How will we compute these values incrementally?
 
-By having the tuples $` T_i = \big( \sum_{j=1}^{n}{x_i^{(j)}}, ~ \sum_{j=1}^{n}{{(x_i^{(j)})}^2}, ~ n \big) `$, where $` n `$ is the count of the instances, 
+By having the tuples $` T_i = \big( \sum_{j=1}^{n}{x_i^{(j)} }, ~ \sum_{j=1}^{n}{ {(x_i^{(j)})}^2}, ~ n \big) `$, where $` n `$ is the count of the instances, 
 available at any point of the computation!
 This way, when training or evaluating, in batch or on stream, we have access to all parameters of the model $` \mu_i `$ and
 $` \sigma_i^2 `$ at any time by calculating:
 
 ```math
-\mu_i = \frac{\sum_{j=1}^{n}{x_i^{(j)}}}{n} = \frac{T_i[0]}{T_i[2]}, ~~~~~
-\sigma_i^2 = \frac{\sum_{j=1}^{n}{{(x_i^{(j)})}^2}}{n} - \mu_i^2 = \frac{T_i[1]}{T_i[2]} - (\frac{T_i[0]}{T_i[2]})^2
+\mu_i = \frac{\sum_{j=1}^{n}{x_i^{(j)} }}{n} = \frac{T_i[0]}{T_i[2]}, ~~~~~
+\sigma_i^2 = \frac{\sum_{j=1}^{n}{ {(x_i^{(j)})}^2} }{n} - \mu_i^2 = \frac{T_i[1]}{T_i[2]} - (\frac{T_i[0]}{T_i[2]})^2
 ```
 
 So let's go ahead and fetch the dataset, then implement the algorithm with awk.
